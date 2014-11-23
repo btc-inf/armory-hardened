@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "hardened", "hardened\hardened.cproj", "{D7BFFC57-50D7-4769-B12E-8B0EEE1DBC8B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D7BFFC57-50D7-4769-B12E-8B0EEE1DBC8B}.Debug|AVR.ActiveCfg = Debug|AVR
+		{D7BFFC57-50D7-4769-B12E-8B0EEE1DBC8B}.Debug|AVR.Build.0 = Debug|AVR
+		{D7BFFC57-50D7-4769-B12E-8B0EEE1DBC8B}.Release|AVR.ActiveCfg = Release|AVR
+		{D7BFFC57-50D7-4769-B12E-8B0EEE1DBC8B}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

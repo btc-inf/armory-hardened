@@ -34,19 +34,19 @@
 #include "transaction.h"
 #include "wallet.h"
 
-typedef struct _B64_CTX {
+/*typedef struct _B64_CTX {
 	BYT buff_bp;
 	uint8_t buff[48];
 	FIL fp;
-} B64_CTX;
+} B64_CTX;*/
 
-void armtx_fetch_unsigned_file(const char *filename, char *uniqueid, BYT *armtx_bp);
-uint8_t armtx_build_signed_file(BYT *armtx_bp, const char *uniqueid, const WLT *wallet, const char *wlt_filename);
-uint8_t armtx_get_latest_unsigned_file(char *filename);
+//uint8_t armtx_fetch_unsigned_file(const char *filename, char *uniqueid, BYT *armtx_bp);
+//uint8_t armtx_build_signed_file(BYT *armtx_bp, const char *uniqueid, const WLT *wallet, const char *wlt_filename);
+//uint8_t armtx_get_latest_unsigned_file(char *filename);
 
-void armtx_push_base64blocks_to_file_init(B64_CTX *ctx, const char *filename, const char *uniqueid);
-void armtx_push_base64blocks_to_file_update(B64_CTX *ctx, const uint8_t *src, const uint16_t len);
-void armtx_push_base64blocks_to_file_final(B64_CTX *ctx);
+//void armtx_push_base64blocks_to_file_init(B64_CTX *ctx, const char *filename, const char *uniqueid);
+//void armtx_push_base64blocks_to_file_update(B64_CTX *ctx, const uint8_t *src, const uint16_t len);
+//void armtx_push_base64blocks_to_file_final(B64_CTX *ctx);
 
 void armtx_get_uniqueid(BYT *armtx_bp, char *uniqueid);
 
@@ -77,7 +77,7 @@ uint64_t armtx_get_total_inputvalue(BYT *armtx_bp);
 uint64_t armtx_get_total_outputvalue(BYT *armtx_bp);
 uint64_t armtx_get_fee(BYT *armtx_bp);
 
-void armtx_build_unsigned_txhash_limbuffer(BYT *armtx_bp, const uint16_t txin, uint8_t *txhash);
+//void armtx_build_unsigned_txhash_limbuffer(BYT *armtx_bp, const uint16_t txin, uint8_t *txhash);
 void armtx_build_unsigned_txhash(BYT *armtx_bp, const uint16_t txin, uint8_t *txhash);
 
 uint8_t armtx_build_txin_sig(BYT *armtx_bp, const uint16_t txin, const /*WLT *wallet*/uint8_t *privkey, BYT *sig_bp);
@@ -95,5 +95,15 @@ size_t tx_get_txout_pos(BYT *tx_bp, const uint16_t txout);
 size_t tx_get_txout_script_pos(BYT *tx_bp, const uint16_t txout);
 size_t tx_get_txout_value_pos(BYT *tx_bp, const uint16_t txout);
 uint64_t tx_get_txout_value(BYT *tx_bp, const uint16_t txout);
+
+uint8_t armtx_insert_sigs(BYT *u_armtx_bp, BYT *s_armtx_bp, void *pub2privkey_wrp);
+
+//uint8_t armtx_build_signed_file2(BYT *armtx_bp, const char *uniqueid, const WLT *wallet, const char *wlt_filename);
+
+void txfile_build_signed_file_snkwrp(BYT *bp);
+uint8_t txfile_build_signed_file_pub2privkeywrp(const uint8_t *pubkey, uint8_t *privkey);
+uint8_t txfile_build_signed_file(BYT *u_armtx_bp);
+uint8_t txfile_fetch_unsigned_file(char *fn, char *uniqueid, BYT *armtx_bp);
+size_t txfile_fetch_unsigned_file_srcwrp(BYT *bp, size_t ofs);
 
 #endif /* TRANSACTION_H_ */

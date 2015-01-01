@@ -42,7 +42,7 @@
 #ifndef ARMORY_H_
 #define ARMORY_H_
 
-
+/*
 typedef struct armoryReducedAddr1 {
 	uint8_t hash160[20];
 	uint8_t hash160_chksum[4];
@@ -61,12 +61,12 @@ typedef struct armoryReducedWallet2 {
 	uint8_t labelName[32];
 	uint32_t highestUsedChainIndex;
 	//WLT_ADDR rootaddr;
-} WLT_FIL;
+} WLT_FIL;*/
 
 typedef struct EEPROMWalletData {
 	uint8_t flags;
 	uint8_t uniqueid[6];
-	uint8_t uniqueid_cs[4];
+	//uint8_t uniqueid_cs[4];
 	uint8_t privkey[32];
 	uint8_t privkey_cs[4];
 } WLT_EEP;
@@ -91,10 +91,8 @@ typedef struct ArmoryWalletInstance2 {
 
 
 void compute_chained_privkey(uint8_t *privkey, uint8_t *chaincode, uint8_t *pubkey, uint8_t *next_privkey);
-void armwlt_compute_chained_pubkey(uint8_t *pubkey, uint8_t *chaincode, uint8_t *next_pubkey);
 
-
-uint8_t armwl_get_privkey_from_pubkey(const WLT *wallet, FIL *fp, const uint8_t *pubkey, uint8_t *privkey);
+uint8_t armwlt_get_privkey_from_pubkey(const WLT *wallet, /*FIL *fp*/const char *wltfn, const uint8_t *pubkey, uint8_t *privkey);
 
 uint8_t safe_extend_privkey(uint8_t *privkey, uint8_t *chaincode, uint8_t *pubkey, uint8_t *next_privkey, uint8_t *next_privkey_checksum);
 uint8_t safe_extend_pubkey(uint8_t *privkey, uint8_t *pubkey, uint8_t *pubkey_checksum, uint8_t *pubkeyhash, uint8_t *pubkeyhash_checksum);
@@ -104,8 +102,9 @@ void derive_chaincode_from_rootkey(uint8_t *privkey, uint8_t *chaincode);
 //uint8_t create_wallet_from_rootkey(uint8_t rootkey[32], uint8_t checksum[4], armory_wallet *wallet, armory_addr *addrlist);
 uint8_t get_wallet_mapblock(FIL *fp, uint16_t blockstart, uint32_t *ci_map);
 
-uint8_t armwlt_create_instance(uint16_t walletid, WLT *wallet);
-uint8_t armwlt_create_instance2(WLT *wallet, const uint8_t options);
+//uint8_t armwlt_create_instance(uint16_t walletid, WLT *wallet);
+//uint8_t ui_set_active_wallet(WLT *wallet);
+uint8_t armwlt_create_instance(WLT *wallet, const uint8_t options);
 
 //uint8_t safe_extend_addrlist(armory_wallet *wallet, armory_addr *addrlist, const uint8_t num);
 

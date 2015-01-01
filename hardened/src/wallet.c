@@ -90,7 +90,21 @@ uint8_t armwlt_build_rootpubkey_file(const WLT *wallet)
 
 uint16_t armwlt_eep_get_first_free_slot(void)
 {
-	return 0; // no multi-wallet support yet; always slot 0
+	uint16_t i = 0;
+	uint16_t wltid = 0;
+	WLT_EEP eepwlt;
+	uint16_t wltcnt = eeprom_read_word(EEP_WLTCNT);
+
+	do
+	{
+		eeprom_read_block(&eepwlt, armwlt_get_eep_walletpos(i), sizeof(WLT_EEP));
+		if(*eepwlt.uniqueid != NULL && *(eepwlt.uniqueid+1) != NULL) wltid++;
+
+		i++;
+	} while (wltid < wltcnt);
+
+
+	return wltid;
 }
 
 uint8_t armwlt_eep_create_wallet(const uint8_t *rootkey, const uint8_t *uniqueid)
@@ -99,7 +113,7 @@ uint8_t armwlt_eep_create_wallet(const uint8_t *rootkey, const uint8_t *uniqueid
 	uint16_t walletid = armwlt_eep_get_first_free_slot();
 
 	compute_checksum(rootkey, 32, eepwlt.privkey_cs);
-	compute_checksum(uniqueid, 6, eepwlt.uniqueid_cs);
+	//compute_checksum(uniqueid, 6, eepwlt.uniqueid_cs);
 	memcpy(eepwlt.privkey, rootkey, 32);
 	memcpy(eepwlt.uniqueid, uniqueid, 6);
 	eepwlt.flags = 0;
@@ -119,7 +133,7 @@ uint8_t armwlt_eep_create_wallet(const uint8_t *rootkey, const uint8_t *uniqueid
 	}
 
 	eeprom_busy_wait();
-	eeprom_update_word(EEP_WLTCNT, 1);
+	eeprom_update_word(EEP_WLTCNT, eeprom_read_word(EEP_WLTCNT)+1);
 
 	memset(&eepwlt, 0, sizeof(WLT_EEP));
 	memset(&eepwlt_chk, 0, sizeof(WLT_EEP));
@@ -145,55 +159,41 @@ uint8_t armwlt_eep_erase_wallet(const uint16_t walletid)
 	}
 
 	eeprom_busy_wait();
-	eeprom_update_word(EEP_WLTCNT, 0);
+	eeprom_update_word(EEP_WLTCNT, eeprom_read_word(EEP_WLTCNT)-1);
 
 	return 1;
 }
 
-uint8_t armwlt_read_wallet_file(const char *filename, uint8_t *rootkey)
+uint8_t armwlt_eep_read_wallet(WLT *wallet)
 {
-	FIL fp;
-	uint8_t buff[36];
-	uint32_t br;
+	WLT_EEP eepwlt;
+	uint8_t cs_verify;
 
-	if(f_open(&fp, filename, FA_READ)) return 0;
-	f_lseek(&fp, 954);
-	if(f_read(&fp, buff, 36, &br)) return 0;
-	f_close(&fp);
+	eeprom_busy_wait();
+	eeprom_read_block(&eepwlt, armwlt_get_eep_walletpos(wallet->id), sizeof(WLT_EEP));
 
-	if(!verify_checksum(buff, 32, buff + 32)) {
-		memset(buff, 0, 36);
-		return 0;
+	//if(!(cs_verify = fix_verify_checksum(eepwlt.uniqueid, 6, eepwlt.uniqueid_cs))) return 0;
+
+	//if(cs_verify == 2) {
+	//	eeprom_busy_wait();
+	//	eeprom_update_block(&eepwlt, armwlt_get_eep_walletpos(wallet->id), sizeof(WLT_EEP));
+	//}
+
+	if(!(cs_verify = fix_verify_checksum(eepwlt.privkey, 32, eepwlt.privkey_cs))) return 0;
+
+	if(cs_verify == 2) {
+		eeprom_busy_wait();
+		eeprom_update_block(&eepwlt, armwlt_get_eep_walletpos(wallet->id), sizeof(WLT_EEP));
 	}
 
-	memcpy(rootkey, buff, 32);
-	memset(buff, 0, 36);
+	memcpy(wallet->uniqueid, eepwlt.uniqueid, 6);
+	memcpy(wallet->rootkey, eepwlt.privkey, 32);
+
+	memset(&eepwlt, 0, sizeof(WLT_EEP));
 	return 1;
 }
 
-uint8_t armwlt_read_rootkey_file(const char *filename, uint8_t *rootkey)
-{
-	FIL fp;
-	char easy16buff[100];
-	uint32_t br;
-
-	if(f_open(&fp, filename, FA_READ)) return 0;
-	if(f_read(&fp, easy16buff, 100, &br)) return 0;
-	f_close(&fp);
-	easy16buff[br] = '\0';
-
-	if(!readSixteenEasyBytes(easy16buff + readSixteenEasyBytes(easy16buff, rootkey), rootkey + 16)) {
-		memset(easy16buff, 0, sizeof(easy16buff));
-		memset(rootkey, 0, 32);
-		return 0;
-	}
-
-	memset(easy16buff, 0, sizeof(easy16buff));
-	return 1;
-}
-
-
-uint8_t armwlt_create_instance2(WLT *wallet, const uint8_t options)
+uint8_t armwlt_create_instance(WLT *wallet, const uint8_t options)
 {
 	derive_chaincode_from_rootkey(wallet->rootkey, wallet->chaincode);
 	privkey_to_pubkey(wallet->rootkey, wallet->rootpubkey);
@@ -225,77 +225,50 @@ uint8_t armwlt_create_instance2(WLT *wallet, const uint8_t options)
 	return 1;
 }
 
-
-uint8_t armwlt_eep_read_wallet(WLT *wallet)
+uint8_t armwlt_read_wallet_file(const char *filename, uint8_t *rootkey)
 {
-	WLT_EEP eepwlt;
-	uint8_t cs_verify;
+	FIL fp;
+	uint8_t buff[36];
+	UINT br;
 
-	eeprom_busy_wait();
-	eeprom_read_block(&eepwlt, armwlt_get_eep_walletpos(wallet->id), sizeof(WLT_EEP));
+	if(f_open(&fp, filename, FA_READ)) return 0;
+	f_lseek(&fp, 954);
+	if(f_read(&fp, buff, 36, &br)) return 0;
+	f_close(&fp);
 
-	if(!(cs_verify = fix_verify_checksum(eepwlt.uniqueid, 6, eepwlt.uniqueid_cs))) return 0;
-
-	if(cs_verify == 2) {
-		eeprom_busy_wait();
-		eeprom_update_block(&eepwlt, armwlt_get_eep_walletpos(wallet->id), sizeof(WLT_EEP));
+	if(!verify_checksum(buff, 32, buff + 32)) {
+		memset(buff, 0, 36);
+		return 0;
 	}
 
-	if(!(cs_verify = fix_verify_checksum(eepwlt.privkey, 32, eepwlt.privkey_cs))) return 0;
+	memcpy(rootkey, buff, 32);
+	memset(buff, 0, 36);
+	return 1;
+}
 
-	if(cs_verify == 2) {
-		eeprom_busy_wait();
-		eeprom_update_block(&eepwlt, armwlt_get_eep_walletpos(wallet->id), sizeof(WLT_EEP));
+uint8_t armwlt_read_rootkey_file(const char *filename, uint8_t *rootkey)
+{
+	FIL fp;
+	char easy16buff[100];
+	UINT br;
+
+	if(f_open(&fp, filename, FA_READ)) return 0;
+	if(f_read(&fp, easy16buff, 100, &br)) return 0;
+	f_close(&fp);
+	easy16buff[br] = '\0';
+
+	if(!readSixteenEasyBytes(easy16buff + readSixteenEasyBytes(easy16buff, rootkey), rootkey + 16)) {
+		memset(easy16buff, 0, sizeof(easy16buff));
+		memset(rootkey, 0, 32);
+		return 0;
 	}
 
-	memcpy(wallet->uniqueid, eepwlt.uniqueid, 6);
-	memcpy(wallet->rootkey, eepwlt.privkey, 32);
-
-	memset(&eepwlt, 0, sizeof(WLT_EEP));
+	memset(easy16buff, 0, sizeof(easy16buff));
 	return 1;
 }
 
 
-uint8_t armwlt_create_instance(/*const uint8_t *uniqueid,*/uint16_t walletid, WLT *wallet)
-{
-	//FIL fp;
-	WLT_EEP eepwlt;
-	uint8_t cs_verify;
-	//char b58uniqueid[10];
-	//char filename[_MAX_LFN + 1];
-	//eeprom_busy_wait();
-	//eeprom_update_word(EEP_WLTACT, 0);
-	eeprom_busy_wait();
-	eeprom_read_block(&eepwlt, armwlt_get_eep_walletpos(walletid), sizeof(WLT_EEP));
-
-
-	//eepwlt.privkey_cs[2] = 0x51;
-
-	 //cs_verify = fix_verify_checksum(eepwlt.uniqueid, 8, eepwlt.uniqueid_cs);
-	 if(!(cs_verify = fix_verify_checksum(eepwlt.uniqueid, 6, eepwlt.uniqueid_cs))) return 0;
-
-	 if(cs_verify == 2) {
-		eeprom_busy_wait();
-		eeprom_update_block(&eepwlt, armwlt_get_eep_walletpos(walletid), sizeof(WLT_EEP));
-	 }
-
-	if(!(cs_verify = fix_verify_checksum(eepwlt.privkey, 32, eepwlt.privkey_cs))) return 0;
-
-	if(cs_verify == 2) {
-		eeprom_busy_wait();
-		eeprom_update_block(&eepwlt, armwlt_get_eep_walletpos(walletid), sizeof(WLT_EEP));
-	}
-
-	wallet->id = walletid;
-	memcpy(wallet->uniqueid, eepwlt.uniqueid, 6);
-	memcpy(wallet->rootkey, eepwlt.privkey, 32);
-	armwlt_create_instance2(wallet, WLT_DELETE_ROOTKEY);
-
-	memset(&eepwlt, 0, sizeof(WLT_EEP));
-	return 1;
-}
-
-uint8_t armwl_get_privkey_from_pubkey(const WLT *wallet, FIL *fp, const uint8_t *pubkey, uint8_t *privkey)
+uint8_t armwlt_get_privkey_from_pubkey(const WLT *wallet, /*FIL *fp*/const char *wltfn, const uint8_t *pubkey, uint8_t *privkey)
 {
 	uint8_t pubkeyhash[20], pubkeyhash_buf[20], pubkey_buf[65];
 	uint32_t ci_map[50];
@@ -303,7 +276,7 @@ uint8_t armwl_get_privkey_from_pubkey(const WLT *wallet, FIL *fp, const uint8_t 
 	//uint8_t chaincode[32];
 
 	//FRESULT fr;
-	//FIL fp;
+	FIL fp;
 	//char filename[100];
 	uint32_t br;
 
@@ -317,22 +290,22 @@ uint8_t armwl_get_privkey_from_pubkey(const WLT *wallet, FIL *fp, const uint8_t 
 
 	//memset(wallet->rootkey, 0, 32);
 
-	//f_open(&fp, wallet->filename, FA_READ);
+	f_open(&fp, wltfn, FA_READ);
 
 	uint8_t eom;
 	do {
 
-		eom = get_wallet_mapblock(fp, ci_map_offset, ci_map);
+		eom = get_wallet_mapblock(&fp, ci_map_offset, ci_map);
 
 		for(uint8_t i = 0; i < eom; i++) {
-			f_lseek (fp, ci_map[i]);
-			f_read(fp, (void *) pubkeyhash_buf, 20, (UINT*) &br);
+			f_lseek (&fp, ci_map[i]);
+			f_read(&fp, (void *) pubkeyhash_buf, 20, (UINT*) &br);
 			if(memcmp(pubkeyhash, pubkeyhash_buf, 20) == 0) {
 
 				return 1;
 				} else {
-				f_lseek (fp, (DWORD) f_tell(fp) + 144);
-				f_read(fp, (void *) pubkey_buf, 65, (UINT*) &br);
+				f_lseek (&fp, (DWORD) f_tell(&fp) + 144);
+				f_read(&fp, (void *) pubkey_buf, 65, (UINT*) &br);
 
 				compute_chained_privkey(privkey, wallet->chaincode, pubkey_buf, privkey);
 			}
@@ -344,8 +317,9 @@ uint8_t armwl_get_privkey_from_pubkey(const WLT *wallet, FIL *fp, const uint8_t 
 
 		ci_map_offset += 50;
 
-	} while (eom != 0 && !f_eof(fp));
+	} while (eom != 0 && !f_eof(&fp));
 
+	f_close(&fp);
 	return 0;
 }
 
@@ -421,45 +395,6 @@ void compute_chained_privkey(uint8_t *privkey, uint8_t *chaincode, uint8_t *pubk
 	memcpy(next_privkey, temp, 32);
 }
 
-void armwlt_compute_chained_pubkey(uint8_t *pubkey, uint8_t *chaincode, uint8_t *next_pubkey)
-{
-	extern uint8_t curve_n[32];
-	uint8_t chainMod[32], chainXor[32];
-
-	EccPoint P, R;
-
-	memcpy(&P, pubkey + 1, 64);
-	vli_swap(P.x, P.x);
-	vli_swap(P.y, P.y);
-
-	hash256(pubkey, 65, chainMod);
-
-	for(uint8_t i = 0; i <= sizeof(chainXor); i++) {
-		chainXor[i] = chaincode[i] ^ chainMod[i];
-	}
-
-	vli_swap(chainXor, chainXor); // make LE
-	//vli_swap(privkey, temp2);
-	//vli_modMult(temp, chainXor, temp2, curve_n);
-
-	EccPoint_mult(&R, &P, chainXor, NULL);
-	// ergebnis point
-
-	vli_swap(R.x, R.x);
-	vli_swap(R.y, R.y);
-
-	*next_pubkey = 0x04;
-	memcpy(next_pubkey + 1, &R, 64);
-	//memcpy(next_pubkey + 33, &R.y, 32);
-
-
-	//vli_swap(temp, temp);
-
-	//memcpy(next_pubkey, temp, 65);
-}
-
-
-
 void derive_chaincode_from_rootkey(uint8_t *rootkey, uint8_t *chaincode)
 {
 	const char msg[] = "Derive Chaincode from Root Key"; // 0x44657269766520436861696E636F64652066726F6D20526F6F74204B6579
@@ -475,7 +410,6 @@ void derive_chaincode_from_rootkey(uint8_t *rootkey, uint8_t *chaincode)
 
 	hmac_sha256_armory_workaround(hash, 32, m, strlen(msg), chaincode);
 }
-
 
 /*
 uint8_t create_wallet_from_rootkey(uint8_t rootkey[32], uint8_t checksum[4], armory_wallet *wallet, armory_addr *addrlist)

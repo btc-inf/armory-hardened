@@ -95,9 +95,6 @@ int main(void)
 	memset(&fs, 0, sizeof(FATFS));
 	f_mount(LUN_ID_SD_MMC_0_MEM, &fs);
 
-	if(eeprom_read_word(EEP_WLTCNT)) {
-		armwlt_create_instance(0, &ui_wallet);
-	}
 
 	udc_start();
 	_ui_init();

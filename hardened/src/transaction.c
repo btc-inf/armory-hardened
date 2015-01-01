@@ -43,13 +43,12 @@ void armtx_get_uniqueid(BYT *armtx_bp, char *uniqueid)
 	armtx_build_unsigned_txhash(armtx_bp, 0xFFFF, txhash); // build hash of tx with all sigscripts empty
 	base58_encode(txhash, 32, b58txhash);
 	memcpy(uniqueid, b58txhash, 8); // trim to 8 chars
-	*(uniqueid + 9) = '\0'; // terminate id string
+	*(uniqueid + 8) = '\0'; // terminate id string
 }
 
 uint16_t armtx_get_txin_cnt(BYT *armtx_bp)
 {
-	b_rewind(armtx_bp); // this method is the base for every other op, so we make sure to start at 0+rewofs
-	b_seek(armtx_bp, b_tell(armtx_bp) + 12); // work relational for the case of limited workspace
+	b_seek(armtx_bp, 4 + 4 + 4); // start at 0, skip version, mbyte, locktime
 	return b_getvint(armtx_bp);
 }
 
@@ -97,15 +96,55 @@ size_t armtx_get_txin_supptx_len(BYT *armtx_bp, const uint16_t txin)
 	return b_getvint(armtx_bp);
 }
 
+static size_t armtx_get_txin_inputvalue_rebuff(BYT *bp, size_t ofs)
+{
+	typedef struct {
+		BYT *armtx_bp;
+		uint16_t txin;
+	} ctx;
+
+	ctx *supptx_ctx;
+	supptx_ctx = (*bp).inh_ctx;
+
+	size_t len = armtx_get_txin_supptx_len(supptx_ctx->armtx_bp, supptx_ctx->txin);
+	size_t btc = len - ofs < bp->res ? len - ofs : bp->res;
+
+	b_seek( supptx_ctx->armtx_bp, b_tell(supptx_ctx->armtx_bp) + ofs);
+	//b_rewind(bp);
+	//b_copy(supptx_ctx->armtx_bp, bp, btc);
+	b_read(supptx_ctx->armtx_bp, b_addr(bp), btc);
+
+	return btc;
+}
+
 uint64_t armtx_get_txin_inputvalue(BYT *armtx_bp, const uint16_t txin)
 {
 	uint64_t val;
 	uint32_t i = armtx_get_txin_previndex(armtx_bp, txin);
 
-	armtx_get_txin_supptx_len(armtx_bp, txin); // goto supptx (moves over the len varint)
-	b_setrewofs(armtx_bp); // limit the workspace for the tx handlers
-	val = tx_get_txout_value(armtx_bp, i);
-	b_unsetrewofs(armtx_bp); // get back full workspace for following ops
+	BYT supptx_bp;
+	uint8_t supptx[400];
+	//void *supptx_addr;
+
+	struct {
+		BYT *armtx_bp;
+		uint16_t txin;
+	} supptx_ctx = {armtx_bp, txin};
+
+	//armtx_get_txin_supptx_len(armtx_bp, txin); // goto supptx (moves over the len varint)
+	//supptx_ctx.txin = txin;//b_tell(armtx_bp);
+	//supptx_ctx.armtx_bp = armtx_bp;
+	//ctx.armtx_bp = armtx_bp;
+	//ctx.ofs =
+
+	b_open(&supptx_bp, supptx, sizeof(supptx));
+	b_setbufin(&supptx_bp, &armtx_get_txin_inputvalue_rebuff, &supptx_ctx);
+
+	//armtx_get_txin_supptx_len(armtx_bp, txin); // goto supptx (moves over the len varint)
+	//b_setrewofs(armtx_bp); // limit the workspace for the tx handlers
+	//val = tx_get_txout_value(armtx_bp, i);
+	val = tx_get_txout_value(&supptx_bp, i);
+	//b_unsetrewofs(armtx_bp); // get back full workspace for following ops
 	return val;
 }
 
@@ -246,8 +285,7 @@ uint64_t armtx_get_fee(BYT *armtx_bp)
 */
 uint16_t tx_get_txin_cnt(BYT *tx_bp)
 {
-	b_rewind(tx_bp); // this method is the base for every other op, so we make sure to start at 0+rewofs
-	b_seek(tx_bp, b_tell(tx_bp) + 4); // so we always start relational: skip ver
+	b_seek(tx_bp, 4); // start at 0, skip ver
 	return b_getvint(tx_bp);
 }
 
@@ -342,7 +380,7 @@ void armtx_build_unsigned_txhash(BYT *armtx_bp, const uint16_t txin, uint8_t *tx
 
 			b_putc(&rawtx_bp, 0x19); // write script len
 			b_write(&rawtx_bp, script, 25); // write temp sigscript
-			} else {
+		} else {
 			b_putc(&rawtx_bp, 0x00); // if this is not the input to sign, set empty sigscript
 		}
 
@@ -407,6 +445,7 @@ uint8_t build_DER_sig(const uint8_t *hashtosign, const uint8_t *privkey, BYT *si
 {
 	uint8_t h[32], p[32], k[32], r[32], s[32];
 	uint8_t len = 0x44; // min sequence length
+	//static volatile uint8_t veri = 0;
 
 	vli_swap(hashtosign, h); // need hash to sign as little endian for vli arithmetics
 	vli_swap(privkey, p); // same with private key
@@ -446,138 +485,25 @@ uint8_t build_DER_sig(const uint8_t *hashtosign, const uint8_t *privkey, BYT *si
 	return len + 2; // +2 to include sequence byte (0x30) and the length byte itself
 }
 
-/*
-*
-* Tx file operation functions:
-*
-*/
-void armtx_push_base64blocks_to_file_init(B64_CTX *ctx, const char *filename, const char *uniqueid)
-	{
-		f_open(&ctx->fp, filename, FA_READ | FA_WRITE | FA_CREATE_ALWAYS);
-
-		//char header[100];
-		//sprintf (header, "=====TXSIGCOLLECT-TESTTEST======================================", uniqueid);
-
-		f_puts("=====TXSIGCOLLECT-", &ctx->fp);
-		f_puts(uniqueid, &ctx->fp);
-		f_puts("======================================\r\n", &ctx->fp);
-
-		b_open(&ctx->buff_bp, &ctx->buff, sizeof(&ctx->buff));
-	}
-
-void armtx_push_base64blocks_to_file_update(B64_CTX *ctx, const uint8_t *src, const uint16_t len)
+uint8_t armtx_insert_sigs(BYT *u_armtx_bp, BYT *s_armtx_bp, void *pub2privkey_wrp)
 {
-	char buff_b64[64+1];
-	uint32_t i = 48 - b_size(&ctx->buff_bp); // how many new bytes to add to the old bytes in the buffer
+	size_t txin_cnt;
+	uint8_t pubkey[65], privkey[32];
+	char q[21];
+	uint8_t (*pub2privkey_wrp_ptr)(const uint8_t *pubkey, uint8_t *privkey);
 
-	if(len >= i) { // we have enough new bytes to fill the buffer
-		b_write(&ctx->buff_bp, src, i); // fill it
-	} else {
-		b_write(&ctx->buff_bp, src, len); // fill in all available new bytes and wait for next call
-		return; // stop
-	}
-
-
-	base64enc(buff_b64, b_addr(&ctx->buff_bp), 48);
-
-	b_reopen(&ctx->buff_bp);
-
-	f_puts(buff_b64, &ctx->fp);
-	f_puts("\r\n", &ctx->fp);
-
-
-	uint8_t rem = (len - i) % 48;
-
-
-	while(i + 46 <= len) {
-
-		base64enc(buff_b64, src + i, 48);
-		f_puts(buff_b64, &ctx->fp);
-		f_puts("\r\n", &ctx->fp);
-
-		i += 48;
-	}
-
-	b_write(&ctx->buff_bp, src + len - rem, rem);
-	b_truncate(&ctx->buff_bp);
-}
-
-void armtx_push_base64blocks_to_file_final(B64_CTX *ctx)
-{
-	char buff_b64[64+1];
-
-	//armtx_push_base64blocks_to_file_update(ctx, src, len);
-
-	if(b_size(&ctx->buff_bp) > 0) {
-		base64enc(buff_b64, b_addr(&ctx->buff_bp), b_size(&ctx->buff_bp));
-		f_puts(buff_b64, &ctx->fp);
-		f_puts("\r\n", &ctx->fp);
-	}
-	memset(buff_b64, '=', 64);
-	buff_b64[64] = '\0';
-	f_puts(buff_b64, &ctx->fp);
-	f_close(&ctx->fp);
-}
-
-
-void armtx_fetch_unsigned_file(const char *filename, char *uniqueid, BYT *armtx_bp)
-{
-	b_reopen(armtx_bp);
-
-	FIL fp;
-	f_open(&fp, filename, FA_READ);
-
-	char armtx_rawbuff[100];//[67];
-	uint8_t armtx_binbuff[100];//[46];
-
-	f_gets((TCHAR *) armtx_rawbuff, 67, &fp);
-	//memset(uniqueid, 0, 9);
-	//memcpy(uniqueid, armtx_rawbuff + 18, 8);
-
-	while(!f_eof(&fp)) {
-		f_gets((TCHAR *) armtx_rawbuff, 67, &fp);
-		if(armtx_rawbuff[0] != '=') {
-			base64dec(armtx_binbuff, armtx_rawbuff, 0);
-			b_write(armtx_bp, armtx_binbuff, base64_binlength(armtx_rawbuff, 0));
-		}
-	}
-	f_close(&fp);
-
-	armtx_get_uniqueid(armtx_bp, uniqueid);
-}
-
-uint8_t armtx_build_signed_file(BYT *armtx_bp, const char *uniqueid, const WLT *wallet, const char *wlt_filename)
-{
-	B64_CTX ctx;
-	FIL fp_wlt;
-	uint16_t txin_cnt;
-
-	char fn[100], q[21];
-
-	uint8_t pubkey[65];
-
-	if(f_open(&fp_wlt, wlt_filename, FA_READ)) return 0;
-
-
-	sprintf(fn, "armory_%s.hardened.SIGNED.tx", uniqueid);
-	armtx_push_base64blocks_to_file_init(&ctx, fn, uniqueid);
-	//"=====TXSIGCOLLECT-12345678======================================"
+	pub2privkey_wrp_ptr = pub2privkey_wrp;
 
 	BYT sig_bp;
-	uint8_t sigdata[0x49], privkey[32];
-	b_open(&sig_bp, sigdata, sizeof(sigdata));
+	uint8_t sigdata[0x49]; // max. P2PKH sig len is 73 (0x49) bytes
+	b_open(&sig_bp, sigdata, sizeof(sigdata)); // open sigdata buffer
 
-	BYT vintbuff_bp;
-	uint8_t vintbuff[3];
-	b_open(&vintbuff_bp, vintbuff, sizeof(vintbuff));
+	// copy first 12 bytes:
+	b_rewind(u_armtx_bp);
+	b_copy(u_armtx_bp, s_armtx_bp, 12);
 
-	armtx_push_base64blocks_to_file_update(&ctx, b_addr(armtx_bp), 12);
-
-	txin_cnt = armtx_get_txin_cnt(armtx_bp);
-	b_putvint(&vintbuff_bp, txin_cnt);
-
-	armtx_push_base64blocks_to_file_update(&ctx, b_addr(&vintbuff_bp), b_reopen(&vintbuff_bp)); // push txin cnt vint to file
-
+	txin_cnt = armtx_get_txin_cnt(u_armtx_bp);
+	b_putvint(s_armtx_bp, txin_cnt); // push txin cnt vint to file
 
 	for(uint16_t i = 0; i < txin_cnt; i++) {
 
@@ -587,96 +513,186 @@ uint8_t armtx_build_signed_file(BYT *armtx_bp, const char *uniqueid, const WLT *
 		gfx_mono_draw_string(q,	0, 11, &sysfont);
 		#endif
 
-		armtx_get_txin_pubkey(armtx_bp, i, pubkey);
-		if(!armwl_get_privkey_from_pubkey(wallet, &fp_wlt, pubkey, privkey)) {
+		// get the corresponding pubkey for txin and compute privkey; stop if unsuccessful:
+		armtx_get_txin_pubkey(u_armtx_bp, i, pubkey);
+		if(!pub2privkey_wrp_ptr(pubkey, privkey)) {
 			memset(privkey, 0, 32);
-			f_close(&fp_wlt);
-			f_close(&ctx.fp);
-			f_unlink(fn);
 			return 0;
 		}
 
-		// create vint with new length of txin (old len + sig len).
-		// This works without possible extra bytes because the siglen byte is set as 0x00 before and max 0x49 after.
+		// create vint with new length of txin (old len + sig len) and push to file.
+		// This works without extra bytes because the siglen byte is set as 0x00 before and max 0x49 after.
 		// The sig itself is meanwhile built and kept in sig_bp
-		b_putvint(&vintbuff_bp, armtx_get_txin_len(armtx_bp, i) + armtx_build_txin_sig(armtx_bp, i, privkey, &sig_bp));
-		memset(privkey, 0, 32);
+		b_putvint(s_armtx_bp, armtx_get_txin_len(u_armtx_bp, i) + armtx_build_txin_sig(u_armtx_bp, i, privkey, &sig_bp));
+		memset(privkey, 0, 32); // erase privkey
 
-		armtx_push_base64blocks_to_file_update(&ctx, b_addr(&vintbuff_bp), b_reopen(&vintbuff_bp)); // push new txin len as vint to file
+		// copy txin data from version to pubkey. we cheat a bit here and expect just 2 more bytes to follow (2*0x00 for siglist len and loclist len).
+		// by getting the txin length as an arg for b_copy we also set the pointer of armtx_bp to the beginning of the txin data for the copying process
+		b_copy(u_armtx_bp, s_armtx_bp, armtx_get_txin_len(u_armtx_bp, i) - 2);
 
-		// copy txin data beginning from version to pubkey. we cheat a bit here and expect just 2 more bytes to follow (2*0x00 for siglist len and loclist len)
-		armtx_push_base64blocks_to_file_update(&ctx, b_addr(armtx_bp) + \
-		armtx_get_txin_data_pos(armtx_bp, i), \
-		armtx_get_txin_len(armtx_bp, i) - 2);
+		b_putvint(s_armtx_bp, b_size(&sig_bp)); // make vint from sig len and push to file
+		b_write(s_armtx_bp, b_addr(&sig_bp), b_size(&sig_bp)); // push sig to file
 
-		{
-			b_putvint(&vintbuff_bp, b_size(&sig_bp)); // make vint from sig len
-			armtx_push_base64blocks_to_file_update(&ctx, b_addr(&vintbuff_bp), b_reopen(&vintbuff_bp)); // push sig len as vint to file
-			armtx_push_base64blocks_to_file_update(&ctx, b_addr(&sig_bp), b_size(&sig_bp)); // push sig to file
-		}
-
-		b_putvint(&vintbuff_bp, 0x00); // make loclist
-		armtx_push_base64blocks_to_file_update(&ctx, b_addr(&vintbuff_bp), b_reopen(&vintbuff_bp)); // push loclist len to file
+		b_putvint(s_armtx_bp, 0x00); // make loclist and push to file
 	}
 
-	armtx_push_base64blocks_to_file_update(&ctx, b_addr(armtx_bp) + \
-	armtx_get_txout_cnt_pos(armtx_bp), b_size(armtx_bp) - armtx_get_txout_cnt_pos(armtx_bp));
+	// copy outputs:
+	b_copy(u_armtx_bp, s_armtx_bp, b_srcsize(u_armtx_bp) - armtx_get_txout_cnt_pos(u_armtx_bp)); // trick like with txin data above
+	b_flush(s_armtx_bp); // push what's left to the file
 
-	armtx_push_base64blocks_to_file_final(&ctx);
-	f_close(&fp_wlt);
 	return 1;
 }
 
-uint8_t armtx_get_latest_unsigned_file(char *filename)
+/*
+*
+* Tx file operation functions:
+*
+*/
+void txfile_build_signed_file_snkwrp(BYT *bp)
 {
-	uint32_t fdatetime_latest = 0;
-	uint32_t fdatetime_current = 0;
-	//uint16_t fdate = 0;
-	char fname[_MAX_LFN + 1] = "\0";
+	char buff_b64[64+1];
+	size_t s = bp->size;
 
-	FRESULT res;
-	FILINFO fno;
-	DIR dir;
-	// int i;
-	char *fn;
-	#if _USE_LFN
-	static char lfn[_MAX_LFN + 1];   /// Buffer to store the LFN
-	fno.lfname = lfn;
-	fno.lfsize = sizeof lfn;
-	#endif
+	b_rewind(bp);
 
+	while(s > 48) {
+		base64enc(buff_b64, b_posaddr(bp), 48);
 
-	res = f_opendir(&dir, "/");                       // Open the directory
-	if (res == FR_OK) {
-		//i = strlen(path);
-		for (;;) {
-			res = f_readdir(&dir, &fno);                   // Read a directory item
-			if (res != FR_OK || fno.fname[0] == 0) break;  // Break on error or end of dir
-			if (fno.fname[0] == '.') continue;             // Ignore dot entry
-			#if _USE_LFN
-			fn = *fno.lfname ? fno.lfname : fno.fname;
-			#else
-			fn = fno.fname;
-			#endif
-			if(strstr(fn, ".unsigned.tx")) {
+		f_puts(buff_b64, bp->outh_ctx);
+		f_puts("\r\n", bp->outh_ctx);
 
-				fdatetime_current = ((uint32_t) fno.fdate << 16) | fno.ftime;
-
-				if(fdatetime_current > fdatetime_latest) {
-					fdatetime_latest = fdatetime_current;
-					strcpy(fname, fn);
-				}
-			}
-		}
-
-
-		if(fname[0] != '\0') {
-			strcpy(filename, fname);
-			return 1;
-		}
-
-
+		b_seek(bp, b_tell(bp) + 48);
+		s -= 48;
 	}
 
-	return 0;
+	base64enc(buff_b64, b_posaddr(bp), s);
+	f_puts(buff_b64, bp->outh_ctx);
+	f_puts("\r\n", bp->outh_ctx);
+}
+
+uint8_t txfile_build_signed_file_pub2privkeywrp(const uint8_t *pubkey, uint8_t *privkey)
+{
+	char b58uniqueid[10];
+	char wlt_filename[100];
+
+	extern WLT ui_wallet;
+
+	base58_encode(ui_wallet.uniqueid, 6, b58uniqueid);
+
+	if(!scan_for_file(".watchonly.wallet", b58uniqueid, wlt_filename)) return 0;
+	if(!armwlt_get_privkey_from_pubkey(&ui_wallet, wlt_filename, pubkey, privkey)) return 0;
+
+	return 1;
+}
+
+uint8_t txfile_build_signed_file(BYT *u_armtx_bp)
+{
+	FIL fp_tx;
+	char fn[100], uniqueid[9];
+
+	BYT s_armtx_bp;
+	uint8_t s_armtx_buff[48*4]; // must be multiple of 3 (for base64) and should be multiple of 48 because of line break in Armory tx files after 64 bytes
+
+	// open signed tx buffer with outgoing handler:
+	b_open(&s_armtx_bp, s_armtx_buff, sizeof(s_armtx_buff));
+	b_setbufout(&s_armtx_bp, &txfile_build_signed_file_snkwrp, &fp_tx);
+
+	// compute Armory's unique tx id:
+	armtx_get_uniqueid(u_armtx_bp, uniqueid);
+
+	sprintf(fn, "armory_%s.hardened.SIGNED.tx", uniqueid);
+	f_open(&fp_tx, fn, FA_READ | FA_WRITE | FA_CREATE_ALWAYS); // create signed tx file
+
+	// signed tx file header:
+	f_puts("=====TXSIGCOLLECT-", &fp_tx);
+	f_puts(uniqueid, &fp_tx);
+	f_puts("======================================\r\n", &fp_tx);
+
+	if(!armtx_insert_sigs(u_armtx_bp, &s_armtx_bp, &txfile_build_signed_file_pub2privkeywrp)){
+		f_close(&fp_tx);
+		f_unlink(fn);
+		return 0;
+	}
+
+	f_puts("================================================================\r\n", &fp_tx); // tx file footer
+	f_close(&fp_tx);
+	return 1;
+}
+
+size_t txfile_fetch_unsigned_file_srcwrp(BYT *bp, size_t ofs)
+{
+	FIL fp;
+	UINT br;
+	//memcpy(bp->bs, bp->inh_ctx + ofs, bp->res);
+
+	//size_t len = armtx_get_txin_supptx_len(supptx_ctx->armtx_bp, supptx_ctx->txin);
+	size_t btc = bp->srclen - ofs < bp->res ? bp->srclen - ofs : bp->res;
+
+	f_open(&fp, "workspace.bin.temp", FA_READ);
+	f_lseek(&fp, ofs);
+	f_read(&fp, b_addr(bp), (UINT) btc, &br);
+
+	//size_t rem = ui_test_bp.size - ofs;
+
+	//bp->srclen = ui_test_bp.size;
+
+	//if(bp->res > rem) {
+	//	memcpy(bp->bs, ui_test_bp.bs + ofs, rem);
+	//	return rem;
+	//}
+
+	//memcpy(bp->bs, ui_test_bp.bs + ofs, bp->res);
+	//return bp->res;
+
+	f_close(&fp);
+
+	return (size_t) br;
+}
+
+
+uint8_t txfile_fetch_unsigned_file(char *fn, char *uniqueid, BYT *armtx_bp)
+{
+	uint8_t oversize = 0;
+	UINT br;
+	FIL fp_b64, fp_bin;
+	//char fn_bin[100];
+
+	char armtx_rawbuff[100];//[67];
+	uint8_t armtx_binbuff[100];//[46];
+
+	b_reopen(armtx_bp);
+	f_open(&fp_b64, fn, FA_READ);
+
+	if(f_size(&fp_b64)*3/4-2 > b_ressize(armtx_bp)) { // taking whole file size to safely avoid buffer overflow
+		oversize = 1;
+		//sprintf(fn_bin, "%s.bin.temp", fn);
+		//strcpy(fn, fn_bin);
+		f_open(&fp_bin, "workspace.bin.temp", FA_READ | FA_WRITE | FA_CREATE_ALWAYS);
+	}
+
+	f_gets((TCHAR *) armtx_rawbuff, 67, &fp_b64);
+	//memset(uniqueid, 0, 9);
+	//memcpy(uniqueid, armtx_rawbuff + 18, 8);
+
+	while(!f_eof(&fp_b64)) {
+		f_gets((TCHAR *) armtx_rawbuff, 67, &fp_b64);
+		if(armtx_rawbuff[0] != '=') {
+			base64dec(armtx_binbuff, armtx_rawbuff, 0);
+			if(oversize) {
+				f_write(&fp_bin, armtx_binbuff, base64_binlength(armtx_rawbuff, 0), &br);
+			} else {
+				b_write(armtx_bp, armtx_binbuff, base64_binlength(armtx_rawbuff, 0));
+			}
+		}
+	}
+	f_close(&fp_b64);
+
+	if(oversize) {
+		armtx_bp->srclen = f_size(&fp_bin);
+		f_close(&fp_bin);
+		b_setbufin(armtx_bp, &txfile_fetch_unsigned_file_srcwrp, NULL);
+	}
+
+	armtx_get_uniqueid(armtx_bp, uniqueid);
+	return 1;
 }

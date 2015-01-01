@@ -26,24 +26,58 @@ void b_open(BYT *bp, uint8_t *bytestrm, size_t reserved)
 {
 	bp->bs = bytestrm;
 	bp->res = reserved;
-	bp->rewofs = 0;
 	bp->bptr = 0;
 	bp->size = 0;
+
+	bp->inh = 0;
+	bp->outh = 0;
+	bp->vofs = 0;
+}
+
+void b_setbufin(BYT *bp, void *inh, void *ctx)
+{
+	bp->inh = inh;
+	bp->inh_ctx = ctx;
+	b_setpos(bp, 0);
+}
+
+void b_setbufout(BYT *bp, void *outh, void *ctx)
+{
+	bp->outh = outh;
+	bp->outh_ctx = ctx;
 }
 
 uint8_t *b_addr(BYT *bp)
 {
 	return bp->bs;
 }
+uint8_t *b_posaddr(BYT *bp)
+{
+	return bp->bs + bp->bptr;
+}
 
 size_t b_tell(BYT *bp)
 {
-	return bp->bptr;
+	return bp->vofs + bp->bptr;
 }
 
 size_t b_size(BYT *bp)
 {
 	return bp->size;
+}
+size_t b_ressize(BYT *bp)
+{
+	return bp->res;
+}
+size_t b_srcsize(BYT *bp)
+{
+	if(!bp->srclen) return bp->size;
+	return bp->srclen;
+}
+size_t b_snksize(BYT *bp)
+{
+	if(!bp->snklen) return bp->size;
+	return bp->snklen;
 }
 
 size_t b_seek(BYT *bp, size_t ofs)
@@ -51,84 +85,121 @@ size_t b_seek(BYT *bp, size_t ofs)
 	//if(bp->ofs + ofs > bp->size) {
 	//	ofs = bp->size - bp->ofs;
 	//}
-	return bp->bptr = ofs;
+
+	if(ofs < bp->vofs || ofs > bp->vofs+bp->res) {
+		if(bp->inh) {
+			b_setpos(bp, ofs);
+		} else if(bp->outh) {
+			if(ofs < bp->vofs) {
+				ofs = bp->vofs;
+			} else if(ofs > bp->vofs+bp->res) {
+				ofs = bp->vofs+bp->res;
+			}
+		}
+	}
+
+	return bp->bptr = ofs - bp->vofs;
 }
 
 void b_rewind(BYT *bp)
 {
-	b_seek(bp, bp->rewofs);
+	b_seek(bp, 0);
 }
 
 size_t b_truncate(BYT *bp)
 {
-	if(bp->rewofs) return 0; // allow truncating only when the full buff is available
-	// (we expect methods which work in a limited workspace do this without altering the parent)
-
 	return bp->size = bp->bptr;
-}
-
-size_t b_setrewofs(BYT *bp)
-{
-	return bp->rewofs = bp->bptr;
-}
-size_t b_unsetrewofs(BYT *bp)
-{
-	return bp->rewofs = 0;
 }
 
 size_t b_reopen(BYT *bp)
 {
-	if(bp->rewofs) return 0; // allow reopening only when using full buff
-
 	uint16_t size = b_size(bp);
 	b_rewind(bp);
 	b_truncate(bp);
-	return size; // return number of bytes flushed
+	return size; // return number of bytes discarded
+}
+
+size_t b_setpos(BYT *bp, size_t ofs)
+{
+	if((bp->inh)) {
+		bp->size = bp->inh(bp, ofs);
+		bp->vofs = ofs;
+		bp->bptr = 0;
+	}
+	return 0;
 }
 
 size_t b_read(BYT *bp, uint8_t *buff, size_t btr)
 {
-	//if(bp->bptr + btr > bp->maxsize) {
-	//	btr = bp->maxsize - bp->bptr;
-	//}
+	size_t chunk, br = 0;
 
-	memcpy(buff, bp->bs + bp->bptr, btr);
-	bp->bptr += btr;
+	while((bp->inh) && btr > (chunk = bp->size - bp->bptr)) {
+		memcpy(buff + br, bp->bs + bp->bptr, chunk);
+		br += chunk;
+		btr -= chunk;
+		b_setpos(bp, bp->vofs + bp->bptr + br);
+	}
 
-	return btr;
+	memcpy(buff + br, bp->bs + bp->bptr, btr);
+
+	bp->bptr = br ? btr : bp->bptr + btr;
+	br += btr;
+
+	return br;
 }
 
 size_t b_write(BYT *bp, const uint8_t *buff, size_t btw)
 {
-	//if(bp->bptr + btw > bp->maxsize) {
-	//	btw = bp->maxsize - bp->bptr;
-	//}
+	size_t chunk, bw = 0;
 
-	memcpy(bp->bs + bp->bptr, buff, btw);
-	bp->bptr += btw;
+	while((bp->outh) && btw > (chunk = bp->res - bp->bptr)) {
+		memcpy(bp->bs + bp->bptr, buff, chunk);
+		bw += chunk;
+		btw -= chunk;
 
-	if(bp->bptr > bp->size) {
-		bp->size = bp->bptr;
+		bp->bptr = bp->res;
+		bp->size = bp->res;
+
+		b_flush(bp);
 	}
 
-	return btw;
+	if(btw > (chunk = bp->res - bp->bptr)) btw = chunk;
+
+	memcpy(bp->bs + bp->bptr, buff + bw, btw);
+	bp->bptr += btw;
+	bw += btw;
+	if(bp->bptr > bp->size) bp->size = bp->bptr;
+
+	return bw;
+}
+
+void b_flush(BYT *bp)
+{
+	if((bp->outh)) {
+		bp->outh(bp);
+
+		bp->vofs += bp->size;
+		bp->bptr = 0;
+		bp->size = 0;
+	}
+	//return 0;
 }
 
 size_t b_copy(BYT *bp_from, BYT *bp_to, size_t btc)
 {
-	uint8_t buff[8];
+	uint8_t buff[32];
 
-	if(btc <= 8) {
+	if(btc <= sizeof(buff)) {
 		b_read(bp_from, buff, btc);
 		b_write(bp_to, buff, btc);
 	} else {
-		uint8_t rem = btc % 8;
+		uint8_t rem = btc % sizeof(buff);
 		uint16_t s = 0;
 
 		while(s + rem < btc) {
-			b_read(bp_from, buff, 8);
-			b_write(bp_to, buff, 8);
-			s += 8;
+			b_read(bp_from, buff, sizeof(buff));
+			b_write(bp_to, buff, sizeof(buff));
+			s += sizeof(buff);
 		}
 
 		if(rem > 0) {

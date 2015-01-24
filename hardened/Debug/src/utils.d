@@ -13,12 +13,13 @@ src/utils.d src/utils.o: ../src/utils.c ../src/utils.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\xmega.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\fuse.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\lock.h \
- ../src/asf.h ../src/ASF/xmega/drivers/adc/adc.h \
- ../src/ASF/xmega/utils/compiler.h \
- c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\builtins.h \
+ ../src/asf.h ../src/ASF/thirdparty/qtouch/generic/include/touch_api.h \
+ ../src/ASF/common/utils/parts.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stdbool.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\stdlib.h \
- ../src/ASF/common/utils/parts.h \
+ ../src/config/touch_qt_config.h ../src/ASF/xmega/drivers/cpu/ccp.h \
+ ../src/ASF/xmega/utils/compiler.h \
+ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\builtins.h \
  ../src/ASF/xmega/utils/bit_handling/clz_ctz.h \
  ../src/ASF/xmega/utils/preprocessor/preprocessor.h \
  ../src/ASF/xmega/utils/preprocessor/tpaste.h \
@@ -30,12 +31,10 @@ src/utils.d src/utils.o: ../src/utils.c ../src/utils.h \
  ../src/ASF/common/utils/interrupt.h \
  ../src/ASF/common/utils/interrupt/interrupt_avr8.h ../src/app_cpu_load.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\interrupt.h \
- ../src/config/conf_adc.h ../src/ASF/xmega/drivers/nvm/nvm.h \
+ ../src/ASF/xmega/drivers/cpu/xmega_reset_cause.h \
  ../src/ASF/xmega/drivers/cpu/ccp.h \
- ../src/ASF/common/services/sleepmgr/sleepmgr.h \
- ../src/ASF/common/services/sleepmgr/xmega/sleepmgr.h \
- ../src/config/conf_sleepmgr.h ../src/ASF/xmega/drivers/sleep/sleep.h \
- c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\sleep.h \
+ ../src/ASF/common/services/calendar/calendar.h \
+ ../src/ASF/common/services/delay/delay.h \
  ../src/ASF/common/services/clock/sysclk.h ../src/config/conf_clock.h \
  ../src/ASF/common/services/clock/xmega/sysclk.h \
  ../src/ASF/common/boards/board.h \
@@ -44,14 +43,7 @@ src/utils.d src/utils.o: ../src/utils.c ../src/utils.h \
  ../src/ASF/common/services/clock/xmega/osc.h \
  ../src/ASF/common/services/clock/pll.h \
  ../src/ASF/common/services/clock/xmega/pll.h \
- ../src/ASF/thirdparty/qtouch/generic/include/touch_api.h \
- ../src/config/touch_qt_config.h \
- ../src/ASF/xmega/drivers/cpu/xmega_reset_cause.h \
- ../src/ASF/xmega/drivers/cpu/ccp.h \
- ../src/ASF/common/services/calendar/calendar.h \
- ../src/ASF/common/services/delay/delay.h \
  ../src/ASF/common/services/delay/xmega/cycle_counter.h \
- ../src/ASF/common/services/fifo/fifo.h \
  ../src/ASF/thirdparty/fatfs/fatfs-r0.09/src/diskio.h \
  ../src/ASF/thirdparty/fatfs/fatfs-r0.09/src/integer.h \
  ../src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ff.h \
@@ -84,11 +76,16 @@ src/utils.d src/utils.o: ../src/utils.c ../src/utils.h \
  ../src/config/conf_access.h \
  ../src/ASF/xmega/boards/xmega_c3_xplained/led.h \
  ../src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.h \
- ../src/ASF/xmega/drivers/rtc/rtc.h ../src/config/conf_rtc.h \
+ ../src/ASF/xmega/drivers/nvm/nvm.h ../src/ASF/xmega/drivers/rtc/rtc.h \
+ ../src/config/conf_rtc.h \
  ../src/ASF/common/components/memory/sd_mmc/sd_mmc.h \
  ../src/config/conf_sd_mmc.h \
- ../src/ASF/common/services/spi/xmega_usart_spi/usart_spi.h \
  ../src/ASF/common/components/display/ssd1306/font.h \
+ ../src/ASF/xmega/drivers/sleep/sleep.h \
+ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\sleep.h \
+ ../src/ASF/common/services/sleepmgr/sleepmgr.h \
+ ../src/ASF/common/services/sleepmgr/xmega/sleepmgr.h \
+ ../src/config/conf_sleepmgr.h \
  ../src/ASF/common/services/sleepmgr/xmega/sleepmgr.h \
  ../src/ASF/xmega/drivers/tc/tc.h \
  ../src/ASF/common/services/usb/class/cdc/usb_protocol_cdc.h \
@@ -107,9 +104,9 @@ src/utils.d src/utils.o: ../src/utils.c ../src/utils.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\stdio.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stdarg.h \
  ../src/ASF/common/services/usb/udc/udc.h \
- ../src/ASF/common/services/usb/udc/udd.h ../src/bitcoin.h ../src/ecc.h \
- ../src/sha2.h ../src/hmac.h ../src/ripemd160.h ../src/base58.h \
- ../src/bytestream.h
+ ../src/ASF/common/services/usb/udc/udd.h ../src/utils.h ../src/bitcoin.h \
+ ../src/ecc.h ../src/sha2.h ../src/hmac.h ../src/ripemd160.h \
+ ../src/base58.h ../src/bytestream.h
 
 ../src/utils.h:
 
@@ -143,17 +140,21 @@ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-g
 
 ../src/asf.h:
 
-../src/ASF/xmega/drivers/adc/adc.h:
+../src/ASF/thirdparty/qtouch/generic/include/touch_api.h:
 
-../src/ASF/xmega/utils/compiler.h:
-
-c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\builtins.h:
+../src/ASF/common/utils/parts.h:
 
 c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stdbool.h:
 
 c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\stdlib.h:
 
-../src/ASF/common/utils/parts.h:
+../src/config/touch_qt_config.h:
+
+../src/ASF/xmega/drivers/cpu/ccp.h:
+
+../src/ASF/xmega/utils/compiler.h:
+
+c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\builtins.h:
 
 ../src/ASF/xmega/utils/bit_handling/clz_ctz.h:
 
@@ -179,21 +180,13 @@ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-g
 
 c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\interrupt.h:
 
-../src/config/conf_adc.h:
-
-../src/ASF/xmega/drivers/nvm/nvm.h:
+../src/ASF/xmega/drivers/cpu/xmega_reset_cause.h:
 
 ../src/ASF/xmega/drivers/cpu/ccp.h:
 
-../src/ASF/common/services/sleepmgr/sleepmgr.h:
+../src/ASF/common/services/calendar/calendar.h:
 
-../src/ASF/common/services/sleepmgr/xmega/sleepmgr.h:
-
-../src/config/conf_sleepmgr.h:
-
-../src/ASF/xmega/drivers/sleep/sleep.h:
-
-c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\sleep.h:
+../src/ASF/common/services/delay/delay.h:
 
 ../src/ASF/common/services/clock/sysclk.h:
 
@@ -213,21 +206,7 @@ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-g
 
 ../src/ASF/common/services/clock/xmega/pll.h:
 
-../src/ASF/thirdparty/qtouch/generic/include/touch_api.h:
-
-../src/config/touch_qt_config.h:
-
-../src/ASF/xmega/drivers/cpu/xmega_reset_cause.h:
-
-../src/ASF/xmega/drivers/cpu/ccp.h:
-
-../src/ASF/common/services/calendar/calendar.h:
-
-../src/ASF/common/services/delay/delay.h:
-
 ../src/ASF/common/services/delay/xmega/cycle_counter.h:
-
-../src/ASF/common/services/fifo/fifo.h:
 
 ../src/ASF/thirdparty/fatfs/fatfs-r0.09/src/diskio.h:
 
@@ -297,6 +276,8 @@ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-g
 
 ../src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.h:
 
+../src/ASF/xmega/drivers/nvm/nvm.h:
+
 ../src/ASF/xmega/drivers/rtc/rtc.h:
 
 ../src/config/conf_rtc.h:
@@ -305,9 +286,17 @@ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-g
 
 ../src/config/conf_sd_mmc.h:
 
-../src/ASF/common/services/spi/xmega_usart_spi/usart_spi.h:
-
 ../src/ASF/common/components/display/ssd1306/font.h:
+
+../src/ASF/xmega/drivers/sleep/sleep.h:
+
+c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\sleep.h:
+
+../src/ASF/common/services/sleepmgr/sleepmgr.h:
+
+../src/ASF/common/services/sleepmgr/xmega/sleepmgr.h:
+
+../src/config/conf_sleepmgr.h:
 
 ../src/ASF/common/services/sleepmgr/xmega/sleepmgr.h:
 
@@ -346,6 +335,8 @@ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-g
 ../src/ASF/common/services/usb/udc/udc.h:
 
 ../src/ASF/common/services/usb/udc/udd.h:
+
+../src/utils.h:
 
 ../src/bitcoin.h:
 

@@ -23,6 +23,8 @@
 #include <asf.h>
 #include <string.h>
 #include <avr/eeprom.h>
+#include <stddef.h>
+#include <avr/io.h>
 
 #include "ui.h"
 #include "bitcoin.h"
@@ -30,6 +32,9 @@
 #include "base58.h"
 #include "ecc.h"
 #include "sha2.h"
+#include "rand.h"
+
+#include "utils.h"
 
 #include "bytestream.h"
 #include "transaction.h"
@@ -61,6 +66,15 @@ uint8_t check_sdcard(void)
 	return 0; // card is fine
 }
 
+/* first approach for remote controlling; no function yet:
+void usb_check_rx(void)
+{
+	uint8_t buff[100];
+	if(udi_cdc_is_rx_ready()) {
+		printf("%u", udi_cdc_get_nb_received_data());
+		udi_cdc_read_buf(buff, udi_cdc_get_nb_received_data());
+	}
+}*/
 
 /*! \brief Main function. Execution starts here.
  */
@@ -78,6 +92,9 @@ int main(void)
 	sd_mmc_init();
 	rtc_init();
 
+	sysclk_enable_module(SYSCLK_PORT_A, SYSCLK_ADC);
+
+	adc_rand_init();
 
 	_ui_clear();
 
@@ -90,13 +107,11 @@ int main(void)
 
 //	gfx_mono_draw_string("Loading", 40, 25, &sysfont);
 
-	//FRESULT res;
-	//printf("Mount disk (f_mount)...\r\n");
 	memset(&fs, 0, sizeof(FATFS));
 	f_mount(LUN_ID_SD_MMC_0_MEM, &fs);
 
-
-	udc_start();
+	stdio_usb_init();
+	//udc_start();
 	_ui_init();
 
 	while(true) {
@@ -107,5 +122,7 @@ int main(void)
 
 		while(udi_msc_process_trans());
 		_ui_scan_buttons();
+
+		//usb_check_rx();
 	}
 }

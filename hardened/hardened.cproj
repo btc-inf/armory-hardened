@@ -31,19 +31,16 @@
           <option id="common.boards" value="Add" config="" content-id="Atmel.ASF" />
           <option id="common.components.memory.sd_mmc" value="Add" config="spi" content-id="Atmel.ASF" />
           <option id="common.services.basic.clock" value="Add" config="" content-id="Atmel.ASF" />
-          <option id="common.services.basic.fifo" value="Add" config="" content-id="Atmel.ASF" />
-          <option id="common.services.basic.gpio" value="Add" config="" content-id="Atmel.ASF" />
-          <option id="common.services.basic.sleepmgr" value="Add" config="" content-id="Atmel.ASF" />
           <option id="common.services.delay" value="Add" config="" content-id="Atmel.ASF" />
-          <option id="common.services.fs.fatfs" value="Add" config="" content-id="Atmel.ASF" />
           <option id="common.services.gfx_mono.font" value="Add" config="" content-id="Atmel.ASF" />
+          <option id="common.services.basic.gpio" value="Add" config="" content-id="Atmel.ASF" />
           <option id="common.services.usb.class.device" value="Add" config="composite" content-id="Atmel.ASF" />
+          <option id="common.services.fs.fatfs" value="Add" config="" content-id="Atmel.ASF" />
           <option id="config.common.services.qtouch.generic.avr8.xmega_c3_xplained.method" value="Add" config="qtouch_method" content-id="Atmel.ASF" />
-          <option id="xmega.applications.xmega_c3_xplained_demo" value="Add" config="" content-id="Atmel.ASF" />
-          <option id="xmega.drivers.adc" value="Add" config="" content-id="Atmel.ASF" />
           <option id="xmega.drivers.ioport" value="Add" config="" content-id="Atmel.ASF" />
           <option id="xmega.drivers.rtc" value="Add" config="" content-id="Atmel.ASF" />
           <option id="xmega.drivers.tc" value="Add" config="" content-id="Atmel.ASF" />
+          <option id="xmega.applications.xmega_c3_xplained_demo" value="Add" config="" content-id="Atmel.ASF" />
         </options>
         <configurations>
           <configuration key="config.common.services.usb.class.device" value="composite" default="composite" content-id="Atmel.ASF" />
@@ -57,6 +54,13 @@
           <configuration key="config.spi_master_type" value="usart_spi" default="usart_spi" content-id="Atmel.ASF" />
           <configuration key="config.common.utils.stdio.stdio_usb.composite" value="enable" default="enable" content-id="Atmel.ASF" />
           <configuration key="config.compiler.iarew.dlib" value="full" default="full" content-id="Atmel.ASF" />
+          <configuration key="config.xmega.drivers.usb.device.sleepmgr" value="with_sleepmgr" default="with_sleepmgr" content-id="Atmel.ASF" />
+          <configuration key="config.common.services.usb.class.cdc.device.composite" value="disable" default="disable" content-id="Atmel.ASF" />
+          <configuration key="config.common.services.usb.class.hid.device.generic.composite" value="disable" default="disable" content-id="Atmel.ASF" />
+          <configuration key="config.common.services.usb.class.hid.device.keyboard.composite" value="disable" default="disable" content-id="Atmel.ASF" />
+          <configuration key="config.common.services.usb.class.hid.device.mouse.composite" value="disable" default="disable" content-id="Atmel.ASF" />
+          <configuration key="config.common.services.usb.class.phdc.device.composite" value="disable" default="disable" content-id="Atmel.ASF" />
+          <configuration key="config.common.services.usb.class.vendor.device.composite" value="disable" default="disable" content-id="Atmel.ASF" />
         </configurations>
         <files>
           <file path="src/ASF/common/boards/board.h" framework="" version="" source="common/boards/board.h" changed="False" content-id="Atmel.ASF" />
@@ -83,8 +87,6 @@
           <file path="src/ASF/common/services/clock/xmega/sysclk.h" framework="" version="" source="common/services/clock/xmega/sysclk.h" changed="False" content-id="Atmel.ASF" />
           <file path="src/ASF/common/services/delay/delay.h" framework="" version="" source="common/services/delay/delay.h" changed="False" content-id="Atmel.ASF" />
           <file path="src/ASF/common/services/delay/xmega/cycle_counter.h" framework="" version="" source="common/services/delay/xmega/cycle_counter.h" changed="False" content-id="Atmel.ASF" />
-          <file path="src/ASF/common/services/fifo/fifo.c" framework="" version="" source="common/services/fifo/fifo.c" changed="False" content-id="Atmel.ASF" />
-          <file path="src/ASF/common/services/fifo/fifo.h" framework="" version="" source="common/services/fifo/fifo.h" changed="False" content-id="Atmel.ASF" />
           <file path="src/ASF/common/services/gfx_mono/docsrc/gfx_mono_overview.png" framework="" version="" source="common/services/gfx_mono/docsrc/gfx_mono_overview.png" changed="False" content-id="Atmel.ASF" />
           <file path="src/ASF/common/services/gfx_mono/gfx_mono.h" framework="" version="" source="common/services/gfx_mono/gfx_mono.h" changed="False" content-id="Atmel.ASF" />
           <file path="src/ASF/common/services/gfx_mono/gfx_mono_framebuffer.c" framework="" version="" source="common/services/gfx_mono/gfx_mono_framebuffer.c" changed="False" content-id="Atmel.ASF" />
@@ -236,7 +238,6 @@
           <file path="src/app_usb.h" framework="" version="" source="xmega/applications/xmega_c3_xplained_demo/app_usb.h" changed="False" content-id="Atmel.ASF" />
           <file path="src/atmel_devices_cdc_inf.h" framework="" version="" source="xmega/applications/xmega_c3_xplained_demo/atmel_devices_cdc_inf.h" changed="False" content-id="Atmel.ASF" />
           <file path="src/config/conf_access.h" framework="" version="" source="xmega/applications/xmega_c3_xplained_demo/atxmega384c3_xmega_c3_xplained/conf_access.h" changed="False" content-id="Atmel.ASF" />
-          <file path="src/config/conf_adc.h" framework="" version="" source="xmega/applications/xmega_c3_xplained_demo/atxmega384c3_xmega_c3_xplained/conf_adc.h" changed="False" content-id="Atmel.ASF" />
           <file path="src/ASF/xmega/applications/xmega_c3_xplained_demo/atxmega384c3_xmega_c3_xplained/conf_app_display.h" framework="" version="" source="xmega/applications/xmega_c3_xplained_demo/atxmega384c3_xmega_c3_xplained/conf_app_display.h" changed="False" content-id="Atmel.ASF" />
           <file path="src/config/conf_board.h" framework="" version="" source="xmega/applications/xmega_c3_xplained_demo/atxmega384c3_xmega_c3_xplained/conf_board.h" changed="False" content-id="Atmel.ASF" />
           <file path="src/config/conf_clock.h" framework="" version="" source="xmega/applications/xmega_c3_xplained_demo/atxmega384c3_xmega_c3_xplained/conf_clock.h" changed="False" content-id="Atmel.ASF" />
@@ -254,9 +255,6 @@
           <file path="src/ASF/xmega/boards/xmega_c3_xplained/init.c" framework="" version="" source="xmega/boards/xmega_c3_xplained/init.c" changed="False" content-id="Atmel.ASF" />
           <file path="src/ASF/xmega/boards/xmega_c3_xplained/led.h" framework="" version="" source="xmega/boards/xmega_c3_xplained/led.h" changed="False" content-id="Atmel.ASF" />
           <file path="src/ASF/xmega/boards/xmega_c3_xplained/xmega_c3_xplained.h" framework="" version="" source="xmega/boards/xmega_c3_xplained/xmega_c3_xplained.h" changed="False" content-id="Atmel.ASF" />
-          <file path="src/ASF/xmega/drivers/adc/adc.c" framework="" version="" source="xmega/drivers/adc/adc.c" changed="False" content-id="Atmel.ASF" />
-          <file path="src/ASF/xmega/drivers/adc/adc.h" framework="" version="" source="xmega/drivers/adc/adc.h" changed="False" content-id="Atmel.ASF" />
-          <file path="src/ASF/xmega/drivers/adc/xmega_bcd/adc_bcd.c" framework="" version="" source="xmega/drivers/adc/xmega_bcd/adc_bcd.c" changed="False" content-id="Atmel.ASF" />
           <file path="src/ASF/xmega/drivers/cpu/ccp.h" framework="" version="" source="xmega/drivers/cpu/ccp.h" changed="False" content-id="Atmel.ASF" />
           <file path="src/ASF/xmega/drivers/cpu/ccp.s" framework="" version="" source="xmega/drivers/cpu/ccp.s" changed="False" content-id="Atmel.ASF" />
           <file path="src/ASF/xmega/drivers/cpu/xmega_reset_cause.h" framework="" version="" source="xmega/drivers/cpu/xmega_reset_cause.h" changed="False" content-id="Atmel.ASF" />
@@ -359,13 +357,11 @@
             <Value>../src/ASF/xmega/drivers/cpu</Value>
             <Value>../src/ASF/xmega/drivers/tc</Value>
             <Value>../src/ASF/common/services/ioport</Value>
-            <Value>../src/ASF/xmega/drivers/adc</Value>
             <Value>../src/ASF/xmega/boards</Value>
             <Value>../src/ASF/thirdparty/fatfs/fatfs-port-r0.09/xmega</Value>
             <Value>../src/ASF/common/boards</Value>
             <Value>../src/ASF/xmega/applications/xmega_c3_xplained_demo/atxmega384c3_xmega_c3_xplained</Value>
             <Value>../src/ASF/common/services/usb</Value>
-            <Value>../src/ASF/common/services/fifo</Value>
             <Value>../src/ASF/thirdparty/qtouch/generic/include</Value>
             <Value>../src/ASF/thirdparty/qtouch/generic/avr8/qtouch/common</Value>
             <Value>../src/ASF/xmega/utils</Value>
@@ -425,13 +421,11 @@
             <Value>../src/ASF/xmega/drivers/cpu</Value>
             <Value>../src/ASF/xmega/drivers/tc</Value>
             <Value>../src/ASF/common/services/ioport</Value>
-            <Value>../src/ASF/xmega/drivers/adc</Value>
             <Value>../src/ASF/xmega/boards</Value>
             <Value>../src/ASF/thirdparty/fatfs/fatfs-port-r0.09/xmega</Value>
             <Value>../src/ASF/common/boards</Value>
             <Value>../src/ASF/xmega/applications/xmega_c3_xplained_demo/atxmega384c3_xmega_c3_xplained</Value>
             <Value>../src/ASF/common/services/usb</Value>
-            <Value>../src/ASF/common/services/fifo</Value>
             <Value>../src/ASF/thirdparty/qtouch/generic/include</Value>
             <Value>../src/ASF/thirdparty/qtouch/generic/avr8/qtouch/common</Value>
             <Value>../src/ASF/xmega/utils</Value>
@@ -502,13 +496,11 @@
             <Value>../src/ASF/xmega/drivers/cpu</Value>
             <Value>../src/ASF/xmega/drivers/tc</Value>
             <Value>../src/ASF/common/services/ioport</Value>
-            <Value>../src/ASF/xmega/drivers/adc</Value>
             <Value>../src/ASF/xmega/boards</Value>
             <Value>../src/ASF/thirdparty/fatfs/fatfs-port-r0.09/xmega</Value>
             <Value>../src/ASF/common/boards</Value>
             <Value>../src/ASF/xmega/applications/xmega_c3_xplained_demo/atxmega384c3_xmega_c3_xplained</Value>
             <Value>../src/ASF/common/services/usb</Value>
-            <Value>../src/ASF/common/services/fifo</Value>
             <Value>../src/ASF/thirdparty/qtouch/generic/include</Value>
             <Value>../src/ASF/thirdparty/qtouch/generic/avr8/qtouch/common</Value>
             <Value>../src/ASF/xmega/utils</Value>
@@ -569,13 +561,11 @@
             <Value>../src/ASF/xmega/drivers/cpu</Value>
             <Value>../src/ASF/xmega/drivers/tc</Value>
             <Value>../src/ASF/common/services/ioport</Value>
-            <Value>../src/ASF/xmega/drivers/adc</Value>
             <Value>../src/ASF/xmega/boards</Value>
             <Value>../src/ASF/thirdparty/fatfs/fatfs-port-r0.09/xmega</Value>
             <Value>../src/ASF/common/boards</Value>
             <Value>../src/ASF/xmega/applications/xmega_c3_xplained_demo/atxmega384c3_xmega_c3_xplained</Value>
             <Value>../src/ASF/common/services/usb</Value>
-            <Value>../src/ASF/common/services/fifo</Value>
             <Value>../src/ASF/thirdparty/qtouch/generic/include</Value>
             <Value>../src/ASF/thirdparty/qtouch/generic/avr8/qtouch/common</Value>
             <Value>../src/ASF/xmega/utils</Value>
@@ -612,7 +602,6 @@
     <Folder Include="src\ASF\common\services\clock\xmega\" />
     <Folder Include="src\ASF\common\services\delay\" />
     <Folder Include="src\ASF\common\services\delay\xmega\" />
-    <Folder Include="src\ASF\common\services\fifo\" />
     <Folder Include="src\ASF\common\services\gfx_mono\" />
     <Folder Include="src\ASF\common\services\gfx_mono\docsrc\" />
     <Folder Include="src\ASF\common\services\gfx_mono\tools\" />
@@ -665,8 +654,6 @@
     <Folder Include="src\ASF\xmega\boards\" />
     <Folder Include="src\ASF\xmega\boards\xmega_c3_xplained\" />
     <Folder Include="src\ASF\xmega\drivers\" />
-    <Folder Include="src\ASF\xmega\drivers\adc\" />
-    <Folder Include="src\ASF\xmega\drivers\adc\xmega_bcd\" />
     <Folder Include="src\ASF\xmega\drivers\cpu\" />
     <Folder Include="src\ASF\xmega\drivers\nvm\" />
     <Folder Include="src\ASF\xmega\drivers\pmic\" />
@@ -689,6 +676,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\base58.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\rand.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\rand.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\ripemd160.c">
@@ -749,9 +742,6 @@
       <SubType>compile</SubType>
     </None>
     <None Include="src\config\conf_sysfont.h">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="src\config\conf_adc.h">
       <SubType>compile</SubType>
     </None>
     <None Include="src\config\conf_board.h">
@@ -1078,9 +1068,6 @@
     <None Include="src\ASF\xmega\utils\assembler.h">
       <SubType>compile</SubType>
     </None>
-    <None Include="src\ASF\xmega\drivers\adc\adc.h">
-      <SubType>compile</SubType>
-    </None>
     <None Include="src\ASF\xmega\utils\assembler\gas.h">
       <SubType>compile</SubType>
     </None>
@@ -1136,9 +1123,6 @@
       <SubType>compile</SubType>
     </None>
     <None Include="src\ASF\common\utils\interrupt.h">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\common\services\fifo\fifo.h">
       <SubType>compile</SubType>
     </None>
     <None Include="src\ASF\common\services\clock\genclk.h">
@@ -1231,9 +1215,6 @@
     <Compile Include="src\ASF\common\services\clock\xmega\sysclk.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\ASF\common\services\fifo\fifo.c">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\ASF\common\services\gfx_mono\gfx_mono_framebuffer.c">
       <SubType>compile</SubType>
     </Compile>
@@ -1313,12 +1294,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\ASF\xmega\boards\xmega_c3_xplained\init.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\ASF\xmega\drivers\adc\adc.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\ASF\xmega\drivers\adc\xmega_bcd\adc_bcd.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\ASF\xmega\drivers\cpu\ccp.s">

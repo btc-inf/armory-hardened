@@ -88,41 +88,91 @@ uint8_t armwlt_build_rootpubkey_file(const WLT *wallet)
 	return 1;
 }
 
-uint16_t armwlt_eep_get_first_free_slot(void)
+
+uint8_t armwlt_eep_get_actwlt(void)
 {
-	uint16_t i = 0;
-	uint16_t wltid = 0;
+	uint8_t actwlt = eeprom_read_byte(EEP_ACTWLT);
+	if(actwlt == 0xFF) return 0;
+	return actwlt;
+}
+uint8_t armwlt_eep_get_wltnum(void)
+{
+	uint8_t wltnum = eeprom_read_byte(EEP_WLTNUM);
+	if(wltnum == 0xFF) return 0;
+	return wltnum;
+}
+
+uint8_t armwlt_eep_get_next_wltid(uint8_t wltid)
+{
+	//uint16_t i = 0;
+	//uint16_t wltid = 0;
 	WLT_EEP eepwlt;
-	uint16_t wltcnt = eeprom_read_word(EEP_WLTCNT);
+	//uint8_t wltnum = eeprom_read_byte(EEP_WLTNUM);
+
+	if(!wltid || wltid > EEP_WLTNUMMAX || !armwlt_eep_get_wltnum()) return 0;
 
 	do
 	{
-		eeprom_read_block(&eepwlt, armwlt_get_eep_walletpos(i), sizeof(WLT_EEP));
-		if(*eepwlt.uniqueid != NULL && *(eepwlt.uniqueid+1) != NULL) wltid++;
+		eeprom_read_block(&eepwlt, armwlt_get_eep_walletpos(wltid), sizeof(WLT_EEP));
+		if(eepwlt.set == WLT_EEP_SETBYTE) return wltid;
+	} while (++wltid < EEP_WLTNUMMAX);
 
-		i++;
-	} while (wltid < wltcnt);
+	return armwlt_eep_get_next_wltid(1);
+}
+uint8_t armwlt_eep_get_prev_slot(uint8_t slot)
+{
+	//uint16_t i = 0;
+	//uint16_t wltid = 0;
+	WLT_EEP eepwlt;
+	//uint8_t wltnum = eeprom_read_byte(EEP_WLTNUM);
 
+	if(!slot || slot > EEP_WLTNUMMAX || !armwlt_eep_get_wltnum()) return 0;
 
-	return wltid;
+	do
+	{
+		eeprom_read_block(&eepwlt, armwlt_get_eep_walletpos(slot), sizeof(WLT_EEP));
+		if(eepwlt.set == WLT_EEP_SETBYTE) return slot;
+	} while (--slot < EEP_WLTNUMMAX);
+
+	return 0;//armwlt_eep_get_next_wltid(1);
 }
 
-uint8_t armwlt_eep_create_wallet(const uint8_t *rootkey, const uint8_t *uniqueid)
+
+uint8_t armwlt_eep_get_next_free_wltid(uint8_t wltid)
+{
+	//uint16_t i = 0;
+	//uint16_t wltid = 0;
+	WLT_EEP eepwlt;
+	//uint16_t wltcnt = eeprom_read_byte(EEP_WLTNUM);
+
+	if(!wltid || wltid >= EEP_WLTNUMMAX || armwlt_eep_get_wltnum() >= EEP_WLTNUMMAX) return 0;
+
+	do
+	{
+		eeprom_read_block(&eepwlt, armwlt_get_eep_walletpos(wltid), sizeof(WLT_EEP));
+		if(eepwlt.set != WLT_EEP_SETBYTE) return wltid;
+	} while (++wltid < EEP_WLTNUMMAX);
+
+	return armwlt_eep_get_next_free_wltid(1);
+}
+
+uint8_t armwlt_eep_create_wallet(const uint8_t *rootkey, const uint8_t *uniqueid, const uint8_t setact)
 {
 	WLT_EEP eepwlt, eepwlt_chk;
-	uint16_t walletid = armwlt_eep_get_first_free_slot();
+	uint8_t wltid = armwlt_eep_get_next_free_wltid(1);
+	uint8_t wltnum = armwlt_eep_get_wltnum();
+
+	if(wltnum >= EEP_WLTNUMMAX) return 0;
 
 	compute_checksum(rootkey, 32, eepwlt.privkey_cs);
 	//compute_checksum(uniqueid, 6, eepwlt.uniqueid_cs);
 	memcpy(eepwlt.privkey, rootkey, 32);
 	memcpy(eepwlt.uniqueid, uniqueid, 6);
+	eepwlt.set = WLT_EEP_SETBYTE;
 	eepwlt.flags = 0;
 
-	eeprom_busy_wait();
-	eeprom_update_block(&eepwlt, armwlt_get_eep_walletpos(walletid), sizeof(WLT_EEP));
-
-	eeprom_busy_wait();
-	eeprom_read_block(&eepwlt_chk, armwlt_get_eep_walletpos(walletid), sizeof(WLT_EEP));
+	eeprom_update_block(&eepwlt, armwlt_get_eep_walletpos(wltid), sizeof(WLT_EEP));
+	eeprom_read_block(&eepwlt_chk, armwlt_get_eep_walletpos(wltid), sizeof(WLT_EEP));
 
 	// we do not do more verifying than checking eeprom content against data prepared to store before;
 	// as long as we did not create the rootkey on-chip (not supported yet), previous corruption will not affect safety
@@ -132,35 +182,34 @@ uint8_t armwlt_eep_create_wallet(const uint8_t *rootkey, const uint8_t *uniqueid
 		return 0; // eeprom corrupted
 	}
 
-	eeprom_busy_wait();
-	eeprom_update_word(EEP_WLTCNT, eeprom_read_word(EEP_WLTCNT)+1);
+	eeprom_update_byte(EEP_WLTNUM, wltnum+1);
+	if(setact) {
+		eeprom_update_byte(EEP_ACTWLT, wltid);
+	}
 
 	memset(&eepwlt, 0, sizeof(WLT_EEP));
 	memset(&eepwlt_chk, 0, sizeof(WLT_EEP));
-	return 1;
+	return wltid;
 }
 
-uint8_t armwlt_eep_erase_wallet(const uint16_t walletid)
+uint8_t armwlt_eep_erase_wallet(const uint8_t wltid)
 {
 	WLT_EEP eepwlt, eepwlt_chk;
-	memset(&eepwlt, 0, sizeof(WLT_EEP));
 
-	eeprom_busy_wait();
-	eeprom_update_block(&eepwlt, armwlt_get_eep_walletpos(walletid), sizeof(WLT_EEP));
+	if(!wltid) return 0;
 
-	eeprom_busy_wait();
-	eeprom_read_block(&eepwlt_chk, armwlt_get_eep_walletpos(walletid), sizeof(WLT_EEP));
+	memset(&eepwlt, 0xFF, sizeof(WLT_EEP));
 
-	// we do not do more verifying than checking eeprom content against data prepared to store before;
-	// as long as we did not create the rootkey on-chip (not supported yet), previous corruption will not affect safety
+	eeprom_update_block(&eepwlt, armwlt_get_eep_walletpos(wltid), sizeof(WLT_EEP));
+	eeprom_read_block(&eepwlt_chk, armwlt_get_eep_walletpos(wltid), sizeof(WLT_EEP));
+
 	if(memcmp(&eepwlt, &eepwlt_chk, sizeof(WLT_EEP))) {
 		memset(&eepwlt_chk, 0, sizeof(WLT_EEP));
 		return 0; // eeprom corrupted
 	}
 
-	eeprom_busy_wait();
-	eeprom_update_word(EEP_WLTCNT, eeprom_read_word(EEP_WLTCNT)-1);
-
+	eeprom_update_byte(EEP_WLTNUM, armwlt_eep_get_wltnum()-1);
+	eeprom_update_byte(EEP_ACTWLT, armwlt_eep_get_next_wltid(wltid));
 	return 1;
 }
 
@@ -256,6 +305,37 @@ uint8_t armwlt_read_rootkey_file(const char *filename, uint8_t *rootkey)
 	if(f_read(&fp, easy16buff, 100, &br)) return 0;
 	f_close(&fp);
 	easy16buff[br] = '\0';
+
+	if(!readSixteenEasyBytes(easy16buff + readSixteenEasyBytes(easy16buff, rootkey), rootkey + 16)) {
+		memset(easy16buff, 0, sizeof(easy16buff));
+		memset(rootkey, 0, 32);
+		return 0;
+	}
+
+	memset(easy16buff, 0, sizeof(easy16buff));
+	return 1;
+}
+uint8_t armwlt_read_shuffrootkey_file(const char *filename, const char *code, uint8_t *rootkey)
+{
+	FIL fp;
+	char easy16buff[100];
+	UINT br;
+	static volatile uint8_t i, j;
+
+	if(f_open(&fp, filename, FA_READ)) return 0;
+	if(f_read(&fp, easy16buff, 100, &br)) return 0;
+	f_close(&fp);
+	easy16buff[br] = '\0';
+
+	const char transl[] = "0123456789ABDCEF";
+
+	for(i = 0; i < br; i++) {
+		for(j = 0; j < 16; j++) {
+			if(easy16buff[i] == transl[j]) {
+				easy16buff[i] = code[j];
+			}
+		}
+	}
 
 	if(!readSixteenEasyBytes(easy16buff + readSixteenEasyBytes(easy16buff, rootkey), rootkey + 16)) {
 		memset(easy16buff, 0, sizeof(easy16buff));
@@ -374,7 +454,7 @@ uint8_t get_wallet_mapblock(FIL *fp, uint16_t blockstart, uint32_t *ci_map)
 }
 
 
-void compute_chained_privkey(uint8_t *privkey, uint8_t *chaincode, uint8_t *pubkey, uint8_t *next_privkey)
+void compute_chained_privkey(const uint8_t *privkey, const uint8_t *chaincode, const uint8_t *pubkey, uint8_t *next_privkey)
 {
 	extern uint8_t curve_n[32];
 	uint8_t chainMod[32], chainXor[32], temp[32], temp2[32];

@@ -4,6 +4,8 @@
 
 src\base58.c
 
+src\rand.c
+
 src\ripemd160.c
 
 src\sha2.c
@@ -31,8 +33,6 @@ src\ASF\common\components\memory\sd_mmc\sd_mmc_spi.c
 src\ASF\common\services\calendar\calendar.c
 
 src\ASF\common\services\clock\xmega\sysclk.c
-
-src\ASF\common\services\fifo\fifo.c
 
 src\ASF\common\services\gfx_mono\gfx_mono_framebuffer.c
 
@@ -77,10 +77,6 @@ src\ASF\thirdparty\fatfs\fatfs-r0.09\src\option\ccsbcs.c
 src\ASF\thirdparty\qtouch\generic\avr8\qtouch\common\qt_asm_xmega.S
 
 src\ASF\xmega\boards\xmega_c3_xplained\init.c
-
-src\ASF\xmega\drivers\adc\adc.c
-
-src\ASF\xmega\drivers\adc\xmega_bcd\adc_bcd.c
 
 src\ASF\xmega\drivers\cpu\ccp.s
 

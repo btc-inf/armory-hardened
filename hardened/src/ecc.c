@@ -1562,7 +1562,7 @@ void vli_swap(const uint8_t *src, uint8_t *dest)
 
 
 // generate deterministic k according to -http://tools.ietf.org/html/rfc6979
-int ecdsa_derive_k(const uint8_t p_privateKey[NUM_ECC_DIGITS], const uint8_t p_hash[NUM_ECC_DIGITS], uint8_t k[NUM_ECC_DIGITS])//bignum256 *secret, const uint8_t *priv_key, const uint8_t *hash)
+int ecdsa_derive_k(const uint8_t p_privateKey[NUM_ECC_DIGITS], uint8_t p_hash[NUM_ECC_DIGITS], uint8_t k[NUM_ECC_DIGITS])//bignum256 *secret, const uint8_t *priv_key, const uint8_t *hash)
 {
 	uint8_t v[NUM_ECC_DIGITS], msg[3*NUM_ECC_DIGITS+1], x_h1[2*NUM_ECC_DIGITS], t[NUM_ECC_DIGITS], z2[NUM_ECC_DIGITS];
 

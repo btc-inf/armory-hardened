@@ -21,10 +21,12 @@
  */
 
 #define EEP_VERSION (void *) 0
-#define EEP_WLTCNT (void *) 2
-#define EEP_WLTACT (void *) 4
-#define armwlt_get_eep_walletpos(i) (void *) (6 + i * sizeof(WLT_EEP))
-#define armwlt_get_eep_privkeypos(i) (void *) (6 + i * sizeof(WLT_EEP) + 11)
+#define EEP_WLTNUM (void *) 1
+#define EEP_ACTWLT (void *) 2
+#define armwlt_get_eep_walletpos(i) (void *) (3 + (i-1) * sizeof(WLT_EEP))
+#define armwlt_get_eep_privkeypos(i) (void *) (3 + (i-1) * sizeof(WLT_EEP) + 7)
+
+#define EEP_WLTNUMMAX 80
 
 #include <string.h>
 #include <avr/io.h>
@@ -64,6 +66,7 @@ typedef struct armoryReducedWallet2 {
 } WLT_FIL;*/
 
 typedef struct EEPROMWalletData {
+	uint8_t set; // 0xAF = set
 	uint8_t flags;
 	uint8_t uniqueid[6];
 	//uint8_t uniqueid_cs[4];
@@ -83,6 +86,8 @@ typedef struct ArmoryWalletInstance2 {
 	uint8_t addrpubkeyhash[20];
 } WLT;
 
+#define WLT_EEP_SETBYTE				0xAF
+
 #define WLT_COMPUTE_UNIQUEID	1
 #define WLT_COMPUTE_FIRST_ADDR	(1 << 1)
 #define WLT_DELETE_ROOTKEY		(1 << 2)
@@ -90,7 +95,7 @@ typedef struct ArmoryWalletInstance2 {
 
 
 
-void compute_chained_privkey(uint8_t *privkey, uint8_t *chaincode, uint8_t *pubkey, uint8_t *next_privkey);
+void compute_chained_privkey(const uint8_t *privkey, const uint8_t *chaincode, const uint8_t *pubkey, uint8_t *next_privkey);
 
 uint8_t armwlt_get_privkey_from_pubkey(const WLT *wallet, /*FIL *fp*/const char *wltfn, const uint8_t *pubkey, uint8_t *privkey);
 
@@ -109,14 +114,22 @@ uint8_t armwlt_create_instance(WLT *wallet, const uint8_t options);
 //uint8_t safe_extend_addrlist(armory_wallet *wallet, armory_addr *addrlist, const uint8_t num);
 
 uint8_t armwlt_read_rootkey_file(const char *filename, uint8_t *rootkey);
+uint8_t armwlt_read_shuffrootkey_file(const char *filename, const char *code, uint8_t *rootkey);
 uint8_t armwlt_read_wallet_file(const char *filename, uint8_t *rootkey);
 uint8_t armwlt_build_rootpubkey_file(const WLT *wallet);
 void armwlt_make_rootkey_file(const uint8_t *rootkey);
 
-uint16_t armwlt_eep_get_first_free_slot(void);
+//uint16_t armwlt_eep_get_first_free_slot(void);
+uint8_t armwlt_eep_get_next_free_wltid(uint8_t wltid);
+uint8_t armwlt_eep_get_next_wltid(uint8_t wltid);
+uint8_t armwlt_eep_get_prev_slot(uint8_t slot);
+
 uint8_t armwlt_eep_read_wallet(WLT *wallet);
-uint8_t armwlt_eep_create_wallet(const uint8_t *rootkey, const uint8_t *uniqueid);
-uint8_t armwlt_eep_erase_wallet(const uint16_t walletid);
+uint8_t armwlt_eep_create_wallet(const uint8_t *rootkey, const uint8_t *uniqueid, const uint8_t setact);
+uint8_t armwlt_eep_erase_wallet(const uint8_t wltid);
+
+uint8_t armwlt_eep_get_actwlt(void);
+uint8_t armwlt_eep_get_wltnum(void);
 
 //uint8_t armwlt_lookup_pubkeyhash(WLT *wallet, uint8_t *pubkeyhash);
 

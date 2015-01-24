@@ -52,9 +52,6 @@
  * running the ASF driver selector tool. Any changes will be discarded.
  */
 
-// From module: ADC - XMEGA B/C/D Implementation
-#include <adc.h>
-
 // From module: Atmel QTouch Library - Common files
 #include <touch_api.h>
 #include <touch_qt_config.h>
@@ -68,9 +65,6 @@
 
 // From module: Delay routines
 #include <delay.h>
-
-// From module: FIFO - First-In-First-Out circular buffer
-#include <fifo.h>
 
 // From module: FatFS file system
 #include <diskio.h>
@@ -117,9 +111,12 @@
 // From module: SD/MMC stack on SPI interface
 #include <sd_mmc.h>
 
+// From module: SPI - Serial Peripheral Interface
+//#include <spi.h>
+
 // From module: SPI - XMEGA implementation
-#include <usart_spi.h>
-#include <xmega_usart_spi/usart_spi.h>
+//#include <spi_master.h>
+//#include <spi_master.h>
 
 // From module: SSD1306 OLED controller
 #include <font.h>
@@ -140,9 +137,6 @@
 
 // From module: TC - Timer Counter
 #include <tc.h>
-
-// From module: USART - Universal Synchronous/Asynchronous Receiver/Transmitter
-#include <usart.h>
 
 // From module: USB CDC Protocol
 #include <usb_protocol_cdc.h>

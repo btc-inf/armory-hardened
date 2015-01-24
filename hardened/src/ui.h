@@ -36,6 +36,7 @@
 #include "sha2.h"
 #include "bytestream.h"
 #include "transaction.h"
+#include "rand.h"
 
 void _ui_clear(void);
 void _ui_qtb_action(uint8_t dir);
@@ -50,6 +51,10 @@ void _ui_format_amount(const uint64_t val, char *output);
 void ui_screen_home(void);
 void ui_screen_menu(void);
 void ui_screen_menu_list(uint8_t i);
+
+void ui_screen_menu_shuffcode(void);
+void ui_screen_menu_shuffcode_list(uint8_t i);
+void ui_screen_menu_shuffcode_refresh(void);
 
 void ui_screen_menu_browsetxs(void);
 void ui_screen_opentx(void);
@@ -68,6 +73,7 @@ void ui_screen_menu_exportwlt_showrootkey_list(uint8_t i);
 void ui_screen_menu_setupwlt(void);
 void ui_screen_menu_setupwlt_list(uint8_t i);
 void ui_screen_menu_setupwlt_rootkeyfile(void);
+void ui_screen_menu_setupwlt_shuffrootkeyfile(void);
 void ui_screen_menu_setupwlt_wltfile(void);
 void ui_screen_menu_setupwlt_createonchip(void);
 
@@ -75,6 +81,9 @@ void ui_screen_menu_setupwlt_import(void);
 void ui_screen_menu_setupwlt_erase(void);
 
 void ui_screen_menu_selectwlt(void);
+void ui_screen_menu_selectwlt_list(uint8_t i);
+void ui_screen_menu_selectwlt_setact(void);
+
 void ui_screen_menu_changepin(void);
 
 void ui_screen_menu_erasewlt(void);

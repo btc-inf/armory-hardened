@@ -4,7 +4,11 @@
  */
 #include "utils.h"
 
+
+static bool usb_cdc_open = false;
+
 const char easy16chars[] = "asdfghjkwertuion";
+//const char easy16chars_obf[] = "ASDFGHJKWERTUION";
 
 size_t binary_to_easyType16(const uint8_t *src, const size_t len, char *dest)
 {
@@ -142,4 +146,16 @@ uint8_t scan_for_file(const char *s1, const char *s2, char *filename)
 	}
 
 	return 0;
+}
+
+
+
+void usb_cdc_set_dtr(bool b_enable)
+{
+	usb_cdc_open = b_enable;
+}
+
+bool usb_cdc_is_open(void)
+{
+	return usb_cdc_open;
 }

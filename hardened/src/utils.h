@@ -27,4 +27,9 @@ size_t readSixteenEasyBytes(const char *src, uint8_t *dest);
 uint8_t securely_erase_file(const char *filename);
 uint8_t scan_for_file(const char *s1, const char *s2, char *filename);
 
+
+bool usb_cdc_is_open(void);
+void usb_cdc_set_dtr(bool b_enable);
+
+
 #endif /* UTILS_H_ */

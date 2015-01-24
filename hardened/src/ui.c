@@ -22,6 +22,7 @@
 
 #include "ui.h"
 
+
 WLT ui_wallet;
 WLT ui_wallet_tmp;
 
@@ -29,6 +30,10 @@ char ui_fname[100];
 BYT ui_armtx_bp;
 uint8_t ui_armtx[5120];
 char ui_armtx_uniqueid[9];
+
+extern const char easy16chars[];
+extern const char easy16chars_obf[];
+char ui_shuff16chars[16];
 
 void (*_ui_sw0_ptr)(void);
 void (*_ui_sw1_ptr)(void);
@@ -49,13 +54,13 @@ void _ui_init(void)
 	tc_set_direction(&TCC1, TC_UP);
 	tc_write_count(&TCC1, 0);
 
-	if(eeprom_read_word(EEP_WLTCNT)) {
-		ui_wallet.id = eeprom_read_word(EEP_WLTACT);
+	if(armwlt_eep_get_wltnum()) {
+		ui_wallet.id = armwlt_eep_get_actwlt();
 		armwlt_eep_read_wallet(&ui_wallet);
 		armwlt_create_instance(&ui_wallet, WLT_DELETE_ROOTKEY);
-		//ui_set_active_wallet(&ui_wallet);
 	}
 
+	byteshuffle((uint8_t *) &easy16chars, 16, (uint8_t *) &ui_shuff16chars);
 
 	ui_screen_home();
 }
@@ -80,10 +85,15 @@ void _ui_scan_buttons(void)
 		if(ioport_pin_is_low(GPIO_PUSH_BUTTON_0) && _ui_sw0_ptr) {
 			accept_input = false;
 		tc_write_clock_source(&TCC1, TC_CLKSEL_DIV1024_gc); /* 24MHz / 1024 */
+			//printf ("0");
+			udi_cdc_putc('0');
 			_ui_sw0_ptr();
 		} else if(ioport_pin_is_low(GPIO_PUSH_BUTTON_1) && _ui_sw1_ptr) {
 			accept_input = false;
 		tc_write_clock_source(&TCC1, TC_CLKSEL_DIV1024_gc); /* 24MHz / 1024 */
+
+			//printf("\x0CSensor data logs:\r\n");
+			udi_cdc_putc('1');
 			_ui_sw1_ptr();
 		}
 
@@ -94,6 +104,8 @@ void _ui_scan_buttons(void)
 			qtb0_last_state = qtb_state;
 			if (!qtb_state) {
 				/* It is a press */
+				//printf("QTB\r\n");
+				udi_cdc_putc('A');
 				accept_input = false;
 				tc_write_clock_source(&TCC1, TC_CLKSEL_DIV1024_gc); /* 24MHz / 1024 */
 				_ui_qtb_action(0);
@@ -106,6 +118,7 @@ void _ui_scan_buttons(void)
 			qtb1_last_state = qtb_state;
 			if (!qtb_state) {
 				/* It is a press */
+				udi_cdc_putc('V');
 				accept_input = false;
 				tc_write_clock_source(&TCC1, TC_CLKSEL_DIV1024_gc); /* 24MHz / 1024 */
 				_ui_qtb_action(1);
@@ -181,7 +194,7 @@ void ui_screen_menu(void)
 {
 	_ui_clear();
 	gfx_mono_draw_string("SELECT MENU ITEM:", 0, 0, &sysfont);
-	_ui_set_qtb(&ui_screen_menu_list, 4);
+	_ui_set_qtb(&ui_screen_menu_list, 5);
 	_ui_set_sw0(&ui_screen_home,'B');
 }
 
@@ -191,22 +204,46 @@ void ui_screen_menu_list(uint8_t i)
 	if(i == 0) {
 		gfx_mono_draw_string("> Select wallet", 0, 11, &sysfont);
 		_ui_set_sw1(&ui_screen_menu_selectwlt,'S');
-	} /*else if(i == 1) {
-		gfx_mono_draw_string("> Browse Tx's", 0, 11, &sysfont);
-		_ui_set_sw1(&ui_screen_menu_browsetxs,'S');
-	}*/ else if(i == 1) {
+	} else if(i == 1) {
+		gfx_mono_draw_string("> Show shuffle code", 0, 11, &sysfont);
+		_ui_set_sw1(&ui_screen_menu_shuffcode,'S');
+	} else if(i == 2) {
 		gfx_mono_draw_string("> Export wallet", 0, 11, &sysfont);
 		_ui_set_sw1(&ui_screen_menu_exportwlt,'S');
-	} else if(i == 2) {
+	} else if(i == 3) {
 		gfx_mono_draw_string("> Erase wallet", 0, 11, &sysfont);
 		_ui_set_sw1(&ui_screen_menu_erasewlt,'S');
-	} else if(i == 3) {
+	} else if(i == 4) {
 		gfx_mono_draw_string("> Set up wallet", 0, 11, &sysfont);
 		_ui_set_sw1(&ui_screen_menu_setupwlt,'S');
-	} else if(i == 4) {
+	} else if(i == 5) {
 		gfx_mono_draw_string("> Change PIN", 0, 11, &sysfont);
 		_ui_set_sw1(&ui_screen_menu_changepin,'S');
 	}
+}
+
+void ui_screen_menu_shuffcode(void)
+{
+	_ui_clear();
+	gfx_mono_draw_string("SHUFFLE CODE:", 0, 0, &sysfont);
+	_ui_set_qtb(&ui_screen_menu_shuffcode_list, 3);
+	_ui_set_sw0(&ui_screen_home,'B');
+	_ui_set_sw1(&ui_screen_menu_shuffcode_refresh,'R');
+}
+
+void ui_screen_menu_shuffcode_refresh(void)
+{
+	byteshuffle((uint8_t *) &easy16chars, 16, (uint8_t *) &ui_shuff16chars);
+	ui_screen_menu_shuffcode();
+}
+
+void ui_screen_menu_shuffcode_list(uint8_t i)
+{
+	char q[21];
+
+	sprintf(q, "%c=%x  %c=%x  %c=%x  %c=%x", ui_shuff16chars[i*4], i*4, ui_shuff16chars[1+i*4], 1+i*4, ui_shuff16chars[2+i*4], 2+i*4, ui_shuff16chars[3+i*4], 3+i*4);
+
+	gfx_mono_draw_string(q, 0, 11, &sysfont);
 }
 
 void ui_screen_menu_erasewlt(void)
@@ -216,7 +253,7 @@ void ui_screen_menu_erasewlt(void)
 	_ui_clear();
 	gfx_mono_draw_string("ERASE WALLET:", 0, 0, &sysfont);
 
-	base58_encode(&ui_wallet.uniqueid, 6, b58uniqueid);
+	base58_encode((const uint8_t *) &ui_wallet.uniqueid, 6, b58uniqueid);
 	sprintf(q, "Erase %s?", b58uniqueid);
 	gfx_mono_draw_string(q, 0, 11, &sysfont);
 
@@ -235,8 +272,15 @@ void ui_screen_menu_erasewlt_erase(void)
 	gfx_mono_draw_string("Erasing wallet...", 0, 11, &sysfont);
 
 	if(armwlt_eep_erase_wallet(ui_wallet.id)) {
-		base58_encode(&ui_wallet.uniqueid, 6, b58uniqueid);
-		memset(&ui_wallet, 0, sizeof(WLT));
+		base58_encode((const uint8_t *) &ui_wallet.uniqueid, 6, b58uniqueid);
+		if((ui_wallet.id = armwlt_eep_get_actwlt())) {
+			gfx_mono_draw_string("Switching wallet...", 0, 11, &sysfont);
+			armwlt_eep_read_wallet(&ui_wallet);
+			armwlt_create_instance(&ui_wallet, WLT_DELETE_ROOTKEY);
+		} else {
+			memset(&ui_wallet, 0, sizeof(WLT));
+		}
+
 		sprintf(q, "Erased %s.", b58uniqueid);
 		gfx_mono_draw_filled_rect(0, 11, 128, 7, 0);
 		gfx_mono_draw_string(q, 0, 11, &sysfont);
@@ -254,8 +298,8 @@ void ui_screen_menu_setupwlt(void)
 {
 	_ui_clear();
 	gfx_mono_draw_string("WALLET SETUP:", 0, 0, &sysfont);
-	_ui_set_qtb(&ui_screen_menu_setupwlt_list, 2);
-	if(eeprom_read_word(EEP_WLTCNT)) {
+	_ui_set_qtb(&ui_screen_menu_setupwlt_list, 3);
+	if(eeprom_read_byte(EEP_WLTNUM)) {
 		_ui_set_sw0(&ui_screen_menu,'B');
 	} else {
 		_ui_set_sw0(&ui_screen_home,'B');
@@ -270,20 +314,32 @@ void ui_screen_menu_setupwlt_list(uint8_t i)
 	gfx_mono_draw_string("> Create on-chip", 0, 11, &sysfont);
 	_ui_set_sw1(&ui_screen_menu_setupwlt_createonchip,'S');
 	} else if(i == 1) {
-	gfx_mono_draw_string("> Take wallet file", 0, 11, &sysfont);
+	gfx_mono_draw_string("> Plain wallet file", 0, 11, &sysfont);
 	_ui_set_sw1(&ui_screen_menu_setupwlt_wltfile,'S');
 	} else if(i == 2) {
-	gfx_mono_draw_string("> Take root key file", 0, 11, &sysfont);
+	gfx_mono_draw_string("> Plain rootkey file", 0, 11, &sysfont);
 	_ui_set_sw1(&ui_screen_menu_setupwlt_rootkeyfile,'S');
-	}
+	} else if(i == 3) {
+	gfx_mono_draw_string("> Shuff. rootkey file", 0, 11, &sysfont);
+	_ui_set_sw1(&ui_screen_menu_setupwlt_shuffrootkeyfile,'S');
+}
 }
 
 void ui_screen_menu_setupwlt_createonchip(void)
 {
 	_ui_clear();
 	gfx_mono_draw_string("CREATE WALLET:", 0, 0, &sysfont);
-	gfx_mono_draw_string("Not yet supported.", 0, 11, &sysfont);
-	_ui_set_sw0(&ui_screen_menu_setupwlt,'B');
+
+	gfx_mono_draw_string("Seeding wallet...", 0, 11, &sysfont);
+
+	adc_rand(ui_wallet_tmp.rootkey, 32);
+	hash256(ui_wallet_tmp.rootkey, 32, ui_wallet_tmp.rootkey);
+
+	gfx_mono_draw_string("Computing wallet...", 0, 11, &sysfont);
+	armwlt_create_instance(&ui_wallet_tmp, WLT_COMPUTE_UNIQUEID);
+
+
+	ui_screen_menu_setupwlt_import();
 }
 
 void ui_screen_menu_setupwlt_wltfile(void)
@@ -306,7 +362,7 @@ void ui_screen_menu_setupwlt_wltfile(void)
 	armwlt_create_instance(&ui_wallet_tmp, WLT_COMPUTE_UNIQUEID);
 
 	gfx_mono_draw_filled_rect(0, 11, 128, 7, 0);
-	base58_encode(&ui_wallet_tmp.uniqueid, 6, b58uniqueid);
+	base58_encode((const uint8_t *) &ui_wallet_tmp.uniqueid, 6, b58uniqueid);
 	sprintf(q, "Import %s?", b58uniqueid);
 	gfx_mono_draw_string(q, 0, 11, &sysfont);
 
@@ -334,7 +390,35 @@ void ui_screen_menu_setupwlt_rootkeyfile(void)
 	armwlt_create_instance(&ui_wallet_tmp, WLT_COMPUTE_UNIQUEID);
 
 	gfx_mono_draw_filled_rect(0, 11, 128, 7, 0);
-	base58_encode(&ui_wallet_tmp.uniqueid, 6, b58uniqueid);
+	base58_encode((const uint8_t *) &ui_wallet_tmp.uniqueid, 6, b58uniqueid);
+	sprintf(q, "Import %s?", b58uniqueid);
+	gfx_mono_draw_string(q, 0, 11, &sysfont);
+
+	_ui_set_sw1(&ui_screen_menu_setupwlt_import,'Y');
+	_ui_set_sw0(&ui_screen_menu_setupwlt_erase,'N');
+}
+
+void ui_screen_menu_setupwlt_shuffrootkeyfile(void)
+{
+	char b58uniqueid[10], q[21];
+
+	_ui_clear();
+	udc_stop();
+
+	gfx_mono_draw_string("SHUFF RK FILE IMPORT:", 0, 0, &sysfont);
+
+	if(!scan_for_file("rootkey", "", ui_fname) || !armwlt_read_shuffrootkey_file(ui_fname, ui_shuff16chars, ui_wallet_tmp.rootkey)) {
+		gfx_mono_draw_string("No shuff. file found.", 0, 11, &sysfont);
+		udc_start();
+		_ui_set_sw0(&ui_screen_menu_setupwlt,'B');
+		return;
+	}
+
+	gfx_mono_draw_string("Computing wallet...", 0, 11, &sysfont);
+	armwlt_create_instance(&ui_wallet_tmp, WLT_COMPUTE_UNIQUEID);
+
+	gfx_mono_draw_filled_rect(0, 11, 128, 7, 0);
+	base58_encode((const uint8_t *) &ui_wallet_tmp.uniqueid, 6, b58uniqueid);
 	sprintf(q, "Import %s?", b58uniqueid);
 	gfx_mono_draw_string(q, 0, 11, &sysfont);
 
@@ -353,21 +437,21 @@ void ui_screen_menu_setupwlt_import(void)
 	gfx_mono_draw_filled_rect(0, 11, 128, 21, 0);
 	gfx_mono_draw_string("Importing wallet...", 0, 11, &sysfont);
 
-	if(armwlt_eep_create_wallet(ui_wallet_tmp.rootkey, ui_wallet_tmp.uniqueid)) {
-		base58_encode(&ui_wallet_tmp.uniqueid, 6, b58uniqueid);
-		sprintf(q, "Imported %s.", b58uniqueid);
+	if((ui_wallet_tmp.id = armwlt_eep_create_wallet(ui_wallet_tmp.rootkey, ui_wallet_tmp.uniqueid, 1))) {
+		base58_encode((const uint8_t *) &ui_wallet_tmp.uniqueid, 6, b58uniqueid);
+		sprintf(q, "Set up %s.", b58uniqueid);
 		memcpy(&ui_wallet, &ui_wallet_tmp, sizeof(WLT));
-		eeprom_write_word(EEP_WLTACT, ui_wallet.id);
+		//eeprom_write_word(EEP_ACTWLT, ui_wallet.id);
+		//ui_wallet.id = armwlt_eep_get_actwlt();
 		memset(ui_wallet.rootkey, 0, 32);
 		memset(ui_wallet.addrprivkey, 0, 32);
-		ui_wallet_tmp.id = 0xFF;
 		gfx_mono_draw_filled_rect(0, 11, 128, 7, 0);
 		gfx_mono_draw_string(q, 0, 11, &sysfont);
 		_ui_set_sw0(&ui_screen_menu_setupwlt_erase,'B');
 	} else {
 		memset(&ui_wallet_tmp, 0, sizeof(WLT));
 		gfx_mono_draw_filled_rect(0, 11, 128, 7, 0);
-		gfx_mono_draw_string("Import failed.", 0, 11, &sysfont);
+		gfx_mono_draw_string("Setup failed.", 0, 11, &sysfont);
 		udc_start();
 		_ui_set_sw0(&ui_screen_menu_setupwlt,'B');
 	}
@@ -380,7 +464,7 @@ void ui_screen_menu_setupwlt_erase(void)
 	gfx_mono_draw_filled_rect(0, 11, 128, 21, 0);
 	gfx_mono_draw_string("Erasing data...", 0, 11, &sysfont);
 
-	if(securely_erase_file(ui_fname)) {
+	if(!strlen(ui_fname) || securely_erase_file(ui_fname)) {
 		udc_start();
 		if(ui_wallet_tmp.id) {
 			ui_screen_home();
@@ -457,11 +541,11 @@ void ui_screen_menu_exportwlt_watchonly(void)
 void ui_screen_menu_exportwlt_showrootkey(void)
 {
 	_ui_clear();
-	gfx_mono_draw_string("SHOW WALLET ROOTKEY:", 0, 0, &sysfont);
+	/*gfx_mono_draw_string("SHOW WALLET ROOTKEY:", 0, 0, &sysfont);
 	gfx_mono_draw_string("Disabled.", 0, 11, &sysfont);
 	_ui_set_sw0(&ui_screen_menu_exportwlt,'B');
 
-	return;
+	return;*/
 
 	gfx_mono_draw_string("SHOW WALLET ROOTKEY:", 0, 0, &sysfont);
 	_ui_set_sw0(&ui_screen_menu_exportwlt_erase,'B');
@@ -515,10 +599,56 @@ void ui_screen_menu_selectwlt(void)
 {
 	_ui_clear();
 	gfx_mono_draw_string("SELECT WALLET:", 0, 0, &sysfont);
-	gfx_mono_draw_string("Not yet supported.", 0, 11, &sysfont);
+	//gfx_mono_draw_string("Not yet supported.", 0, 11, &sysfont);
+
+	//if(!ui_wallet_tmp.id) {
+		//ui_wallet_tmp.id = armwlt_eep_get_next_wltid(1);
+		ui_wallet_tmp.id = 0;
+		ui_wallet_tmp.chaincode[0] = 0;
+	//}
+
 	_ui_set_sw0(&ui_screen_menu,'B');
+	_ui_set_sw1(&ui_screen_menu_selectwlt_setact,'S');
+	_ui_set_qtb(&ui_screen_menu_selectwlt_list, armwlt_eep_get_wltnum()-1);
 }
 
+void ui_screen_menu_selectwlt_setact(void)
+{
+	_ui_clear();
+	gfx_mono_draw_string("SELECT WALLET:", 0, 0, &sysfont);
+
+	gfx_mono_draw_string("Switching wallet...", 0, 11, &sysfont);
+	memcpy(&ui_wallet, &ui_wallet_tmp, sizeof(WLT));
+	armwlt_create_instance(&ui_wallet, WLT_DELETE_ROOTKEY);
+	eeprom_update_byte(EEP_ACTWLT, ui_wallet.id);
+
+	ui_screen_home();
+}
+
+void ui_screen_menu_selectwlt_list(uint8_t i)
+{
+	//gfx_mono_draw_filled_rect(0, 0, 128, 18, 0);
+	char q[21];
+	//WLT eepwlt;
+
+	if(i >= ui_wallet_tmp.chaincode[0]) {
+		ui_wallet_tmp.id = armwlt_eep_get_next_wltid(ui_wallet_tmp.id+1);
+	} else if(i < ui_wallet_tmp.chaincode[0]) {
+		ui_wallet_tmp.id = armwlt_eep_get_prev_slot(ui_wallet_tmp.id-1);
+	}
+
+
+	armwlt_eep_read_wallet(&ui_wallet_tmp);
+	//memset(ui_wallet_tmp.rootkey, 0, 32);
+
+	ui_wallet_tmp.chaincode[0] = i;
+
+
+	base58_encode(ui_wallet_tmp.uniqueid, 6, q);
+
+	gfx_mono_draw_string(q, 0, 11, &sysfont);
+
+}
 
 void ui_screen_menu_changepin(void)
 {
@@ -696,14 +826,17 @@ void ui_screen_home(void)
 	char walletid[10];
 	_ui_clear();
 	*ui_fname = '\0';
+
+	memset(&ui_wallet_tmp, 0, sizeof(WLT));
+
 	f_unlink("workspace.bin.temp");
 
 	b_open(&ui_armtx_bp, ui_armtx, sizeof(ui_armtx));
 	//b_open(&ui_test_bp, ui_test, sizeof(ui_test));
 
-	udc_start();
+	//udc_start();
 
-	if(eeprom_read_word(EEP_WLTCNT)) {
+	if(armwlt_eep_get_wltnum()) {
 
 		base58_encode(ui_wallet.uniqueid, 6, walletid);
 
@@ -719,11 +852,14 @@ void ui_screen_home(void)
 
 		_ui_set_sw1(&ui_screen_menu, 0);
 		_ui_set_sw0(&ui_screen_opentx, 0);
+		//_ui_set_qtb(&ui_screen_menu_selectwlt, 0);
 	} else {
 		gfx_mono_draw_string("Wallet: None", 0, 0, &sysfont);//PaV7rsYj
 		gfx_mono_draw_horizontal_line(0, 11, 128, 1);
+		gfx_mono_draw_string("SW0: Shuffle code", 0, 16, &sysfont);
 		gfx_mono_draw_string("SW1: Set up wallet", 0, 25, &sysfont);
 
+		_ui_set_sw0(&ui_screen_menu_shuffcode, 0);
 		_ui_set_sw1(&ui_screen_menu_setupwlt, 0);
 	}
 }

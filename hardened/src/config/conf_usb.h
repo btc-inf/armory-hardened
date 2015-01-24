@@ -84,7 +84,7 @@
  * USB Device Callbacks definitions (Optional)
  * @{
  */
-#define  UDC_VBUS_EVENT(b_vbus_high)      //stdio_usb_vbus_event(b_vbus_high)
+#define  UDC_VBUS_EVENT(b_vbus_high)      stdio_usb_vbus_event(b_vbus_high)
 #define  UDC_SOF_EVENT()                  //app_usb_sof_action()
 #define  UDC_SUSPEND_EVENT()
 #define  UDC_RESUME_EVENT()
@@ -139,7 +139,7 @@
 #define  UDI_CDC_DISABLE_EXT(port)        stdio_usb_disable()
 #define  UDI_CDC_RX_NOTIFY(port)
 #define  UDI_CDC_SET_CODING_EXT(port,cfg)
-#define  UDI_CDC_SET_DTR_EXT(port,set)    //app_usb_cdc_set_dtr(set)
+#define  UDI_CDC_SET_DTR_EXT(port,set)    usb_cdc_set_dtr(set)
 #define  UDI_CDC_SET_RTS_EXT(port,set)
 
 //! Define it when the transfer CDC Device to Host is a low rate (<512000 bauds)
@@ -245,6 +245,6 @@
 #include "udi_cdc.h"
 #include "udi_msc.h"
 #include <stdio_usb.h>
-//#include "app_usb.h"
+#include "utils.h"
 
 #endif // _CONF_USB_H_

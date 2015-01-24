@@ -1,12 +1,16 @@
-src/ASF/common/services/usb/class/msc/device/udi_msc.d \
- src/ASF/common/services/usb/class/msc/device/udi_msc.o: \
- ../src/ASF/common/services/usb/class/msc/device/udi_msc.c \
- ../src/config/conf_usb.h ../src/ASF/xmega/utils/compiler.h \
+src/rand.d src/rand.o: ../src/rand.c ../src/rand.h ../src/asf.h \
+ ../src/ASF/thirdparty/qtouch/generic/include/touch_api.h \
+ ../src/ASF/common/utils/parts.h \
+ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stdint.h \
+ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\stdint.h \
+ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stdbool.h \
+ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\stdlib.h \
+ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stddef.h \
+ ../src/config/touch_qt_config.h ../src/ASF/xmega/drivers/cpu/ccp.h \
+ ../src/ASF/xmega/utils/compiler.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\io.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\sfr_defs.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\inttypes.h \
- c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stdint.h \
- c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\stdint.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\iox384c3.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\portpins.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\common.h \
@@ -15,10 +19,6 @@ src/ASF/common/services/usb/class/msc/device/udi_msc.d \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\fuse.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\lock.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\builtins.h \
- c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stdbool.h \
- c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stddef.h \
- c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\stdlib.h \
- ../src/ASF/common/utils/parts.h \
  ../src/ASF/xmega/utils/bit_handling/clz_ctz.h \
  ../src/ASF/xmega/utils/preprocessor/preprocessor.h \
  ../src/ASF/xmega/utils/preprocessor/tpaste.h \
@@ -30,25 +30,6 @@ src/ASF/common/services/usb/class/msc/device/udi_msc.d \
  ../src/ASF/common/utils/interrupt.h \
  ../src/ASF/common/utils/interrupt/interrupt_avr8.h ../src/app_cpu_load.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\interrupt.h \
- ../src/ASF/common/services/usb/class/cdc/device/udi_cdc.h \
- ../src/ASF/common/services/usb/usb_protocol.h \
- ../src/ASF/common/services/usb/usb_atmel.h \
- ../src/ASF/common/services/usb/class/cdc/usb_protocol_cdc.h \
- ../src/ASF/common/services/usb/udc/udd.h \
- ../src/ASF/common/services/usb/udc/udc_desc.h \
- ../src/ASF/common/services/usb/udc/udi.h \
- ../src/ASF/common/services/usb/udc/udc_desc.h \
- ../src/ASF/common/services/usb/udc/udi.h \
- ../src/ASF/common/services/usb/class/msc/device/udi_msc.h \
- ../src/ASF/common/services/usb/class/msc/usb_protocol_msc.h \
- ../src/ASF/common/utils/stdio/stdio_usb/stdio_usb.h \
- c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\stdio.h \
- c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stdarg.h \
- ../src/ASF/common/services/usb/udc/udc.h \
- ../src/ASF/common/services/usb/udc/udd.h ../src/utils.h \
- c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\string.h \
- ../src/asf.h ../src/ASF/thirdparty/qtouch/generic/include/touch_api.h \
- ../src/config/touch_qt_config.h ../src/ASF/xmega/drivers/cpu/ccp.h \
  ../src/ASF/xmega/drivers/cpu/xmega_reset_cause.h \
  ../src/ASF/xmega/drivers/cpu/ccp.h \
  ../src/ASF/common/services/calendar/calendar.h \
@@ -105,14 +86,50 @@ src/ASF/common/services/usb/class/msc/device/udi_msc.d \
  ../src/ASF/common/services/sleepmgr/xmega/sleepmgr.h \
  ../src/config/conf_sleepmgr.h \
  ../src/ASF/common/services/sleepmgr/xmega/sleepmgr.h \
- ../src/ASF/xmega/drivers/tc/tc.h ../src/bitcoin.h ../src/ecc.h \
- ../src/sha2.h ../src/hmac.h ../src/ripemd160.h ../src/base58.h \
- ../src/bytestream.h \
- ../src/ASF/common/services/usb/class/msc/spc_protocol.h \
- ../src/ASF/common/services/usb/class/msc/sbc_protocol.h \
- ../src/ASF/common/services/usb/class/msc/device/udi_msc.h
+ ../src/ASF/xmega/drivers/tc/tc.h \
+ ../src/ASF/common/services/usb/class/cdc/usb_protocol_cdc.h \
+ ../src/ASF/common/services/usb/class/cdc/device/udi_cdc.h \
+ ../src/config/conf_usb.h \
+ ../src/ASF/common/services/usb/class/msc/device/udi_msc.h \
+ ../src/ASF/common/services/usb/usb_protocol.h \
+ ../src/ASF/common/services/usb/usb_atmel.h \
+ ../src/ASF/common/services/usb/class/msc/usb_protocol_msc.h \
+ ../src/ASF/common/services/usb/udc/udd.h \
+ ../src/ASF/common/services/usb/udc/udc_desc.h \
+ ../src/ASF/common/services/usb/udc/udi.h \
+ ../src/ASF/common/services/usb/udc/udc_desc.h \
+ ../src/ASF/common/services/usb/udc/udi.h \
+ ../src/ASF/common/utils/stdio/stdio_usb/stdio_usb.h \
+ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\stdio.h \
+ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stdarg.h \
+ ../src/ASF/common/services/usb/udc/udc.h \
+ ../src/ASF/common/services/usb/udc/udd.h ../src/utils.h \
+ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\string.h \
+ ../src/bitcoin.h ../src/ecc.h ../src/sha2.h ../src/hmac.h \
+ ../src/ripemd160.h ../src/base58.h ../src/bytestream.h \
+ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\eeprom.h
 
-../src/config/conf_usb.h:
+../src/rand.h:
+
+../src/asf.h:
+
+../src/ASF/thirdparty/qtouch/generic/include/touch_api.h:
+
+../src/ASF/common/utils/parts.h:
+
+c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stdint.h:
+
+c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\stdint.h:
+
+c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stdbool.h:
+
+c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\stdlib.h:
+
+c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stddef.h:
+
+../src/config/touch_qt_config.h:
+
+../src/ASF/xmega/drivers/cpu/ccp.h:
 
 ../src/ASF/xmega/utils/compiler.h:
 
@@ -121,10 +138,6 @@ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-g
 c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\sfr_defs.h:
 
 c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\inttypes.h:
-
-c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stdint.h:
-
-c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\stdint.h:
 
 c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\iox384c3.h:
 
@@ -141,14 +154,6 @@ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-g
 c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\lock.h:
 
 c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\builtins.h:
-
-c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stdbool.h:
-
-c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stddef.h:
-
-c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\stdlib.h:
-
-../src/ASF/common/utils/parts.h:
 
 ../src/ASF/xmega/utils/bit_handling/clz_ctz.h:
 
@@ -173,50 +178,6 @@ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-g
 ../src/app_cpu_load.h:
 
 c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\interrupt.h:
-
-../src/ASF/common/services/usb/class/cdc/device/udi_cdc.h:
-
-../src/ASF/common/services/usb/usb_protocol.h:
-
-../src/ASF/common/services/usb/usb_atmel.h:
-
-../src/ASF/common/services/usb/class/cdc/usb_protocol_cdc.h:
-
-../src/ASF/common/services/usb/udc/udd.h:
-
-../src/ASF/common/services/usb/udc/udc_desc.h:
-
-../src/ASF/common/services/usb/udc/udi.h:
-
-../src/ASF/common/services/usb/udc/udc_desc.h:
-
-../src/ASF/common/services/usb/udc/udi.h:
-
-../src/ASF/common/services/usb/class/msc/device/udi_msc.h:
-
-../src/ASF/common/services/usb/class/msc/usb_protocol_msc.h:
-
-../src/ASF/common/utils/stdio/stdio_usb/stdio_usb.h:
-
-c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\stdio.h:
-
-c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stdarg.h:
-
-../src/ASF/common/services/usb/udc/udc.h:
-
-../src/ASF/common/services/usb/udc/udd.h:
-
-../src/utils.h:
-
-c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\string.h:
-
-../src/asf.h:
-
-../src/ASF/thirdparty/qtouch/generic/include/touch_api.h:
-
-../src/config/touch_qt_config.h:
-
-../src/ASF/xmega/drivers/cpu/ccp.h:
 
 ../src/ASF/xmega/drivers/cpu/xmega_reset_cause.h:
 
@@ -340,6 +301,44 @@ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-g
 
 ../src/ASF/xmega/drivers/tc/tc.h:
 
+../src/ASF/common/services/usb/class/cdc/usb_protocol_cdc.h:
+
+../src/ASF/common/services/usb/class/cdc/device/udi_cdc.h:
+
+../src/config/conf_usb.h:
+
+../src/ASF/common/services/usb/class/msc/device/udi_msc.h:
+
+../src/ASF/common/services/usb/usb_protocol.h:
+
+../src/ASF/common/services/usb/usb_atmel.h:
+
+../src/ASF/common/services/usb/class/msc/usb_protocol_msc.h:
+
+../src/ASF/common/services/usb/udc/udd.h:
+
+../src/ASF/common/services/usb/udc/udc_desc.h:
+
+../src/ASF/common/services/usb/udc/udi.h:
+
+../src/ASF/common/services/usb/udc/udc_desc.h:
+
+../src/ASF/common/services/usb/udc/udi.h:
+
+../src/ASF/common/utils/stdio/stdio_usb/stdio_usb.h:
+
+c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\stdio.h:
+
+c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stdarg.h:
+
+../src/ASF/common/services/usb/udc/udc.h:
+
+../src/ASF/common/services/usb/udc/udd.h:
+
+../src/utils.h:
+
+c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\string.h:
+
 ../src/bitcoin.h:
 
 ../src/ecc.h:
@@ -354,8 +353,4 @@ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-g
 
 ../src/bytestream.h:
 
-../src/ASF/common/services/usb/class/msc/spc_protocol.h:
-
-../src/ASF/common/services/usb/class/msc/sbc_protocol.h:
-
-../src/ASF/common/services/usb/class/msc/device/udi_msc.h:
+c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\avr\eeprom.h:

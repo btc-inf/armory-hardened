@@ -10,6 +10,6 @@
 #include <string.h>
 #include <stdint.h>
 
-void base58_encode(uint8_t *src, uint16_t len, char *dest);
+void base58_encode(const uint8_t *src, const uint16_t len, char *dest);
 
 #endif /* BASE58_H_ */

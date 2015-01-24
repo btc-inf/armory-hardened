@@ -8,7 +8,7 @@
 
 const char pszBase58[] = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
-void base58_encode(uint8_t *src, uint16_t len, char *dest)
+void base58_encode(const uint8_t *src, const uint16_t len, char *dest)
 {
 	uint8_t pos = 0;
 	uint8_t destpos = 0;

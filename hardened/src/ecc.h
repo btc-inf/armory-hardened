@@ -76,7 +76,7 @@ typedef struct EccPoint
 
 
 // Derive k deterministically according to RFC 6979
-int ecdsa_derive_k(const uint8_t p_privateKey[NUM_ECC_DIGITS], const uint8_t p_hash[NUM_ECC_DIGITS], uint8_t k[NUM_ECC_DIGITS]);
+int ecdsa_derive_k(const uint8_t p_privateKey[NUM_ECC_DIGITS], uint8_t p_hash[NUM_ECC_DIGITS], uint8_t k[NUM_ECC_DIGITS]);
 
 
 

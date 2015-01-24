@@ -471,7 +471,7 @@ uint8_t build_DER_sig(const uint8_t *hashtosign, const uint8_t *privkey, BYT *si
 	} else {
 		b_putc(sig_bp, 0x20); // r length
 	}
-	b_write(sig_bp, &r, 32); // write r
+	b_write(sig_bp, (const uint8_t *) &r, 32); // write r
 	b_putc(sig_bp, 0x02); // int identifier
 
 	if(s[0] & 0x80) { // most left bit == 1
@@ -480,7 +480,7 @@ uint8_t build_DER_sig(const uint8_t *hashtosign, const uint8_t *privkey, BYT *si
 	} else {
 		b_putc(sig_bp, 0x20); // s length
 	}
-	b_write(sig_bp, &s, 32); // write s
+	b_write(sig_bp, (const uint8_t *) &s, 32); // write s
 
 	return len + 2; // +2 to include sequence byte (0x30) and the length byte itself
 }

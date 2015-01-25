@@ -16,7 +16,7 @@ The device features 4 buttons:
 
 The QTB buttons are used for browsing menus and info (up/down). The display shows “QTB” in the center bottom if available, with “<” and/or “>” to indicate whether you can scroll up with QTB0 and down with QTB1.
 
-The SW buttons are used for confirming/canceling actions or go back and forth in menu structures. The current function will be shown in the right and/or left bottom as “SW0:” and “SW1:” with a character following, indicating the assigned action:
+The SW buttons are used for confirmation/canceling actions or to go back and forth in menu structures. The current function will be shown in the right and/or left bottom as “SW0:” and “SW1:” with a character following, indicating the assigned action:
 * S: Select
 * B: Back
 * Y: Yes

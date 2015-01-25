@@ -62,7 +62,7 @@ After every successful import, the code will be automatically re-shuffled. You c
 ###Import confirmation
 After finding a valid file, the device will compute and show the corresponding Armory wallet ID and ask you whether you want to import or not. Confirm with SW1:Y or abort with SW0:N.
 
-A freshly set up wallet will automatically be set as the active one. Look at “Select Wallet” how to switch between multiple wallets.
+A freshly set up wallet will automatically be set as the active one. Look at “Transaction signing” how to switch between multiple wallets.
 
 ###Note for imports via files
 After a successful import, the file on the card will be completely overwritten with “-” (ASCII 0x2D) and then dropped from FAT. You will get an error message on the screen if secure erasing is unsuccessful. If the import fails itself (e.g. invalid file content), the file will persist and needs to be deleted manually.
@@ -91,7 +91,7 @@ This will write an Armory-compatible watching-only wallet file named “armory_{
 You can import it to Armory via “Import or Restore Wallet” -> “Import watching-only wallet data” -> “Continue” -> “Load From Text File”.
 
 ###Rootkey file
-This will write an ASCII text file named “armory_.decryt.rootkey.txt” to the SD card. It contains the full, plain wallet seed as if you made a single-sheet paper backup in Armory. 
+This will write an ASCII text file named “armory_{walletid}.decryt.rootkey.txt” to the SD card. It contains the full, plain wallet seed as if you made a single-sheet paper backup in Armory. 
 
 You can import it to Armory via “Import or Restore Wallet” -> “Single-Sheet Backup (printed)” -> “Continue” and copy the file content into the shown input fields.
 

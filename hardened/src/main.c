@@ -66,16 +66,6 @@ uint8_t check_sdcard(void)
 	return 0; // card is fine
 }
 
-/* first approach for remote controlling; no function yet:
-void usb_check_rx(void)
-{
-	uint8_t buff[100];
-	if(udi_cdc_is_rx_ready()) {
-		printf("%u", udi_cdc_get_nb_received_data());
-		udi_cdc_read_buf(buff, udi_cdc_get_nb_received_data());
-	}
-}*/
-
 /*! \brief Main function. Execution starts here.
  */
 int main(void)

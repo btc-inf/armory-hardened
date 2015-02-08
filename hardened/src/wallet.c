@@ -327,7 +327,7 @@ uint8_t armwlt_read_shuffrootkey_file(const char *filename, const char *code, ui
 	f_close(&fp);
 	easy16buff[br] = '\0';
 
-	const char transl[] = "0123456789ABDCEF";
+	const char transl[] = "0123456789ABCDEF";
 
 	for(i = 0; i < br; i++) {
 		for(j = 0; j < 16; j++) {

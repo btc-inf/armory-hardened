@@ -7313,7 +7313,7 @@ END GROUP
  *(.fini0)
                 0x0001a932                _etext = .
 
-.data           0x00802000      0xf7e load address 0x0001a932
+.data           0x00802000      0xf68 load address 0x0001a932
                 0x00802000                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00802000        0x0 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1056/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/../../../../avr/lib/avrxmega6/crtx384c3.o
@@ -7489,310 +7489,310 @@ END GROUP
                 0x00802331       0xae src/transaction.o
                                  0xda (size before relaxing)
  .rodata.str1.1
-                0x008023df      0x493 src/ui.o
-                                0x4c1 (size before relaxing)
+                0x008023df      0x47d src/ui.o
+                                0x4ab (size before relaxing)
  .rodata.str1.1
-                0x00802872        0x2 src/utils.o
+                0x0080285c        0x2 src/utils.o
  .rodata.easy16chars
-                0x00802874       0x11 src/utils.o
-                0x00802874                easy16chars
+                0x0080285e       0x11 src/utils.o
+                0x0080285e                easy16chars
  .rodata.str1.1
-                0x00802885       0x51 src/wallet.o
+                0x0080286f       0x51 src/wallet.o
                                  0x53 (size before relaxing)
  .rodata.mmc_trans_multipliers
-                0x008028d6       0x40 src/ASF/common/components/memory/sd_mmc/sd_mmc.o
-                0x008028d6                mmc_trans_multipliers
+                0x008028c0       0x40 src/ASF/common/components/memory/sd_mmc/sd_mmc.o
+                0x008028c0                mmc_trans_multipliers
  .rodata.sd_trans_multipliers
-                0x00802916       0x40 src/ASF/common/components/memory/sd_mmc/sd_mmc.o
-                0x00802916                sd_trans_multipliers
+                0x00802900       0x40 src/ASF/common/components/memory/sd_mmc/sd_mmc.o
+                0x00802900                sd_trans_multipliers
  .rodata.sd_mmc_trans_units
-                0x00802956       0x1c src/ASF/common/components/memory/sd_mmc/sd_mmc.o
-                0x00802956                sd_mmc_trans_units
- .rodata.month  0x00802972       0x18 src/ASF/common/services/calendar/calendar.o
-                0x00802972                month
+                0x00802940       0x1c src/ASF/common/components/memory/sd_mmc/sd_mmc.o
+                0x00802940                sd_mmc_trans_units
+ .rodata.month  0x0080295c       0x18 src/ASF/common/services/calendar/calendar.o
+                0x0080295c                month
  .rodata.str1.1
-                0x0080298a       0x15 src/ASF/common/services/storage/ctrl_access/ctrl_access.o
+                0x00802974       0x15 src/ASF/common/services/storage/ctrl_access/ctrl_access.o
  .rodata.str1.1
-                0x0080299f        0xd src/ASF/common/services/usb/udc/udc.o
+                0x00802989        0xd src/ASF/common/services/usb/udc/udc.o
  .rodata.str1.1
-                0x008029ac       0x44 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ff.o
+                0x00802996       0x44 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ff.o
  .rodata.excvt.1875
-                0x008029f0       0x80 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ff.o
+                0x008029da       0x80 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ff.o
  .rodata.LfnOfs
-                0x00802a70        0xd src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ff.o
+                0x00802a5a        0xd src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ff.o
  .rodata.tbl_upper.1626
-                0x00802a7d      0x1e0 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/option/ccsbcs.o
+                0x00802a67      0x1e0 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/option/ccsbcs.o
  .rodata.tbl_lower.1625
-                0x00802c5d      0x1e0 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/option/ccsbcs.o
- .rodata.Tbl    0x00802e3d      0x100 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/option/ccsbcs.o
+                0x00802c47      0x1e0 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/option/ccsbcs.o
+ .rodata.Tbl    0x00802e27      0x100 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/option/ccsbcs.o
  .rodata.str1.1
-                0x00802f3d        0x8 src/bitcoin.o
+                0x00802f27        0x8 src/bitcoin.o
  .rodata.str1.1
-                0x00802f45       0x39 src/main.o
+                0x00802f2f       0x39 src/main.o
  *(.gnu.linkonce.d*)
-                0x00802f7e                . = ALIGN (0x2)
-                0x00802f7e                _edata = .
-                0x00802f7e                PROVIDE (__data_end, .)
+                0x00802f68                . = ALIGN (0x2)
+                0x00802f68                _edata = .
+                0x00802f68                PROVIDE (__data_end, .)
 
-.bss            0x00802f80     0x21f3
-                0x00802f80                PROVIDE (__bss_start, .)
+.bss            0x00802f68     0x21f3
+                0x00802f68                PROVIDE (__bss_start, .)
  *(.bss)
- .bss           0x00802f80        0x3 ../src/ASF/thirdparty/qtouch/generic/avr8/qtouch/lib/gcc\libavrxmega6g1-4qt-k-0rs.a(burst_1_1_10_0_1.o)
- .bss           0x00802f83       0x22 ../src/ASF/thirdparty/qtouch/generic/avr8/qtouch/lib/gcc\libavrxmega6g1-4qt-k-0rs.a(touch_api.o)
-                0x00802f83                burst_proc
-                0x00802f85                qt_config_data
-                0x00802f8c                qt_measure_data
-                0x00802f9d                lib_status_flags
-                0x00802f9f                qt_filter_callback
- .bss           0x00802fa5       0x1e ../src/ASF/thirdparty/qtouch/generic/avr8/qtouch/lib/gcc\libavrxmega6g1-4qt-k-0rs.a(touch_process.o)
-                0x00802fa5                sensors
-                0x00802fbd                num_sensors
-                0x00802fbe                dht_counter
- .bss           0x00802fc3        0x8 ../src/ASF/thirdparty/qtouch/generic/avr8/qtouch/lib/gcc\libavrxmega6g1-4qt-k-0rs.a(touch_burst_qt.o)
-                0x00802fc3                SNS_array
-                0x00802fc7                SNSK_array
+ .bss           0x00802f68        0x3 ../src/ASF/thirdparty/qtouch/generic/avr8/qtouch/lib/gcc\libavrxmega6g1-4qt-k-0rs.a(burst_1_1_10_0_1.o)
+ .bss           0x00802f6b       0x22 ../src/ASF/thirdparty/qtouch/generic/avr8/qtouch/lib/gcc\libavrxmega6g1-4qt-k-0rs.a(touch_api.o)
+                0x00802f6b                burst_proc
+                0x00802f6d                qt_config_data
+                0x00802f74                qt_measure_data
+                0x00802f85                lib_status_flags
+                0x00802f87                qt_filter_callback
+ .bss           0x00802f8d       0x1e ../src/ASF/thirdparty/qtouch/generic/avr8/qtouch/lib/gcc\libavrxmega6g1-4qt-k-0rs.a(touch_process.o)
+                0x00802f8d                sensors
+                0x00802fa5                num_sensors
+                0x00802fa6                dht_counter
+ .bss           0x00802fab        0x8 ../src/ASF/thirdparty/qtouch/generic/avr8/qtouch/lib/gcc\libavrxmega6g1-4qt-k-0rs.a(touch_burst_qt.o)
+                0x00802fab                SNS_array
+                0x00802faf                SNSK_array
  *(.bss*)
  .bss.scriptlen.7544
-                0x00802fcb        0x2 src/transaction.o
- .bss.cnt.7543  0x00802fcd        0x2 src/transaction.o
+                0x00802fb3        0x2 src/transaction.o
+ .bss.cnt.7543  0x00802fb5        0x2 src/transaction.o
  .bss.qtb1_last_state.7531
-                0x00802fcf        0x1 src/ui.o
+                0x00802fb7        0x1 src/ui.o
  .bss.qtb0_last_state.7530
-                0x00802fd0        0x1 src/ui.o
+                0x00802fb8        0x1 src/ui.o
  .bss._ui_qtb_i_max
-                0x00802fd1        0x1 src/ui.o
-                0x00802fd1                _ui_qtb_i_max
+                0x00802fb9        0x1 src/ui.o
+                0x00802fb9                _ui_qtb_i_max
  .bss._ui_qtb_i
-                0x00802fd2        0x1 src/ui.o
-                0x00802fd2                _ui_qtb_i
- .bss.lfn.7201  0x00802fd3      0x100 src/utils.o
+                0x00802fba        0x1 src/ui.o
+                0x00802fba                _ui_qtb_i
+ .bss.lfn.7201  0x00802fbb      0x100 src/utils.o
  .bss.usb_cdc_open
-                0x008030d3        0x1 src/utils.o
- .bss.m.7415    0x008030d4       0x1e src/wallet.o
- .bss.N.7388    0x008030f2        0x2 src/wallet.o
- .bss.ci.7387   0x008030f4        0x2 src/wallet.o
- .bss.j.7352    0x008030f6        0x1 src/wallet.o
- .bss.i.7351    0x008030f7        0x1 src/wallet.o
+                0x008030bb        0x1 src/utils.o
+ .bss.m.7415    0x008030bc       0x1e src/wallet.o
+ .bss.N.7388    0x008030da        0x2 src/wallet.o
+ .bss.ci.7387   0x008030dc        0x2 src/wallet.o
+ .bss.j.7352    0x008030de        0x1 src/wallet.o
+ .bss.i.7351    0x008030df        0x1 src/wallet.o
  .bss.current_time_ms_touch
-                0x008030f8        0x2 src/app_touch.o
+                0x008030e0        0x2 src/app_touch.o
  .bss.time_to_measure_touch
-                0x008030fa        0x1 src/app_touch.o
+                0x008030e2        0x1 src/app_touch.o
  .bss.sd_mmc_nb_block_remaining
-                0x008030fb        0x2 src/ASF/common/components/memory/sd_mmc/sd_mmc.o
+                0x008030e3        0x2 src/ASF/common/components/memory/sd_mmc/sd_mmc.o
  .bss.sd_mmc_nb_block_to_tranfer
-                0x008030fd        0x2 src/ASF/common/components/memory/sd_mmc/sd_mmc.o
+                0x008030e5        0x2 src/ASF/common/components/memory/sd_mmc/sd_mmc.o
  .bss.sd_mmc_card
-                0x008030ff        0x2 src/ASF/common/components/memory/sd_mmc/sd_mmc.o
+                0x008030e7        0x2 src/ASF/common/components/memory/sd_mmc/sd_mmc.o
  .bss.sd_mmc_slot_sel
-                0x00803101        0x1 src/ASF/common/components/memory/sd_mmc/sd_mmc.o
+                0x008030e9        0x1 src/ASF/common/components/memory/sd_mmc/sd_mmc.o
  .bss.sd_mmc_ejected
-                0x00803102        0x2 src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.o
+                0x008030ea        0x2 src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.o
  .bss.sd_mmc_spi_nb_block
-                0x00803104        0x2 src/ASF/common/components/memory/sd_mmc/sd_mmc_spi.o
+                0x008030ec        0x2 src/ASF/common/components/memory/sd_mmc/sd_mmc_spi.o
  .bss.sd_mmc_spi_block_size
-                0x00803106        0x2 src/ASF/common/components/memory/sd_mmc/sd_mmc_spi.o
+                0x008030ee        0x2 src/ASF/common/components/memory/sd_mmc/sd_mmc_spi.o
  .bss.sd_mmc_spi_transfert_pos
-                0x00803108        0x4 src/ASF/common/components/memory/sd_mmc/sd_mmc_spi.o
+                0x008030f0        0x4 src/ASF/common/components/memory/sd_mmc/sd_mmc_spi.o
  .bss.sd_mmc_spi_response_32
-                0x0080310c        0x4 src/ASF/common/components/memory/sd_mmc/sd_mmc_spi.o
+                0x008030f4        0x4 src/ASF/common/components/memory/sd_mmc/sd_mmc_spi.o
  .bss.sd_mmc_spi_err
-                0x00803110        0x1 src/ASF/common/components/memory/sd_mmc/sd_mmc_spi.o
+                0x008030f8        0x1 src/ASF/common/components/memory/sd_mmc/sd_mmc_spi.o
  .bss.fbpointer
-                0x00803111        0x2 src/ASF/common/services/gfx_mono/gfx_mono_framebuffer.o
+                0x008030f9        0x2 src/ASF/common/services/gfx_mono/gfx_mono_framebuffer.o
  .bss.framebuffer
-                0x00803113      0x200 src/ASF/common/services/gfx_mono/gfx_mono_ug_2832hsweg04.o
+                0x008030fb      0x200 src/ASF/common/services/gfx_mono/gfx_mono_ug_2832hsweg04.o
  .bss.sof_zlp_counter.7305
-                0x00803313        0x2 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
+                0x008032fb        0x2 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
  .bss.udi_cdc_tx_both_buf_to_send
-                0x00803315        0x1 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
+                0x008032fd        0x1 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
  .bss.udi_cdc_tx_trans_ongoing
-                0x00803316        0x1 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
+                0x008032fe        0x1 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
  .bss.udi_cdc_tx_sof_num
-                0x00803317        0x2 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
+                0x008032ff        0x2 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
  .bss.udi_cdc_tx_buf_sel
-                0x00803319        0x1 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
+                0x00803301        0x1 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
  .bss.udi_cdc_tx_buf_nb
-                0x0080331a        0x4 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
+                0x00803302        0x4 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
  .bss.udi_cdc_tx_buf
-                0x0080331e       0x80 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
+                0x00803306       0x80 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
  .bss.udi_cdc_rx_trans_ongoing
-                0x0080339e        0x1 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
+                0x00803386        0x1 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
  .bss.udi_cdc_rx_pos
-                0x0080339f        0x2 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
+                0x00803387        0x2 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
  .bss.udi_cdc_rx_buf_sel
-                0x008033a1        0x1 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
+                0x00803389        0x1 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
  .bss.udi_cdc_rx_buf_nb
-                0x008033a2        0x4 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
+                0x0080338a        0x4 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
  .bss.udi_cdc_rx_buf
-                0x008033a6       0x80 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
+                0x0080338e       0x80 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
  .bss.udi_cdc_data_running
-                0x00803426        0x1 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
+                0x0080340e        0x1 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
  .bss.udi_cdc_nb_data_enabled
-                0x00803427        0x1 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
+                0x0080340f        0x1 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
  .bss.udi_cdc_nb_comm_enabled
-                0x00803428        0x1 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
- *fill*         0x00803429        0x1 
+                0x00803410        0x1 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
+ *fill*         0x00803411        0x1 
  .bss.uid_cdc_state_msg
-                0x0080342a        0xa src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
+                0x00803412        0xa src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
  .bss.udi_cdc_state
-                0x00803434        0x2 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
+                0x0080341c        0x2 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
  .bss.udi_cdc_line_coding
-                0x00803436        0x8 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
- *fill*         0x0080343e        0x2 
+                0x0080341e        0x8 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
+ *fill*         0x00803426        0x2 
  .bss.udi_msc_capacity.7509
-                0x00803440        0x8 src/ASF/common/services/usb/class/msc/device/udi_msc.o
+                0x00803428        0x8 src/ASF/common/services/usb/class/msc/device/udi_msc.o
  .bss.sense.7496
-                0x00803448       0x14 src/ASF/common/services/usb/class/msc/device/udi_msc.o
+                0x00803430       0x14 src/ASF/common/services/usb/class/msc/device/udi_msc.o
  .bss.udi_msc_nb_block
-                0x0080345c        0x2 src/ASF/common/services/usb/class/msc/device/udi_msc.o
+                0x00803444        0x2 src/ASF/common/services/usb/class/msc/device/udi_msc.o
  .bss.udi_msc_addr
-                0x0080345e        0x4 src/ASF/common/services/usb/class/msc/device/udi_msc.o
+                0x00803446        0x4 src/ASF/common/services/usb/class/msc/device/udi_msc.o
  .bss.udi_msc_b_read
-                0x00803462        0x1 src/ASF/common/services/usb/class/msc/device/udi_msc.o
+                0x0080344a        0x1 src/ASF/common/services/usb/class/msc/device/udi_msc.o
  .bss.udi_msc_b_trans_req
-                0x00803463        0x1 src/ASF/common/services/usb/class/msc/device/udi_msc.o
+                0x0080344b        0x1 src/ASF/common/services/usb/class/msc/device/udi_msc.o
  .bss.udi_msc_b_cbw_invalid
-                0x00803464        0x1 src/ASF/common/services/usb/class/msc/device/udi_msc.o
- *fill*         0x00803465        0x3 
+                0x0080344c        0x1 src/ASF/common/services/usb/class/msc/device/udi_msc.o
+ *fill*         0x0080344d        0x3 
  .bss.udi_msc_sense
-                0x00803468       0x14 src/ASF/common/services/usb/class/msc/device/udi_msc.o
+                0x00803450       0x14 src/ASF/common/services/usb/class/msc/device/udi_msc.o
  .bss.udi_msc_nb_lun
-                0x0080347c        0x4 src/ASF/common/services/usb/class/msc/device/udi_msc.o
+                0x00803464        0x4 src/ASF/common/services/usb/class/msc/device/udi_msc.o
  .bss.udi_msc_cbw
-                0x00803480       0x20 src/ASF/common/services/usb/class/msc/device/udi_msc.o
+                0x00803468       0x20 src/ASF/common/services/usb/class/msc/device/udi_msc.o
  .bss.udc_ep_status.7213
-                0x008034a0        0x2 src/ASF/common/services/usb/udc/udc.o
+                0x00803488        0x2 src/ASF/common/services/usb/udc/udc.o
  .bss.udc_iface_setting.7273
-                0x008034a2        0x1 src/ASF/common/services/usb/udc/udc.o
+                0x0080348a        0x1 src/ASF/common/services/usb/udc/udc.o
  .bss.udc_ptr_iface
-                0x008034a3        0x2 src/ASF/common/services/usb/udc/udc.o
+                0x0080348b        0x2 src/ASF/common/services/usb/udc/udc.o
  .bss.udc_ptr_conf
-                0x008034a5        0x2 src/ASF/common/services/usb/udc/udc.o
+                0x0080348d        0x2 src/ASF/common/services/usb/udc/udc.o
  .bss.udc_num_configuration
-                0x008034a7        0x1 src/ASF/common/services/usb/udc/udc.o
+                0x0080348f        0x1 src/ASF/common/services/usb/udc/udc.o
  .bss.udc_device_status
-                0x008034a8        0x2 src/ASF/common/services/usb/udc/udc.o
+                0x00803490        0x2 src/ASF/common/services/usb/udc/udc.o
  .bss.stdio_usb_interface_enable
-                0x008034aa        0x1 src/ASF/common/utils/stdio/stdio_usb/stdio_usb.o
- .bss.Fsid      0x008034ab        0x2 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ff.o
- .bss.FatFs     0x008034ad       0x10 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ff.o
+                0x00803492        0x1 src/ASF/common/utils/stdio/stdio_usb/stdio_usb.o
+ .bss.Fsid      0x00803493        0x2 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ff.o
+ .bss.FatFs     0x00803495       0x10 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ff.o
  .bss.tc_tcf0_ccd_callback
-                0x008034bd        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034a5        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tcf0_ccc_callback
-                0x008034bf        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034a7        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tcf0_ccb_callback
-                0x008034c1        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034a9        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tcf0_cca_callback
-                0x008034c3        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034ab        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tcf0_err_callback
-                0x008034c5        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034ad        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tcf0_ovf_callback
-                0x008034c7        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034af        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tce0_ccd_callback
-                0x008034c9        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034b1        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tce0_ccc_callback
-                0x008034cb        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034b3        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tce0_ccb_callback
-                0x008034cd        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034b5        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tce0_cca_callback
-                0x008034cf        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034b7        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tce0_err_callback
-                0x008034d1        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034b9        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tce0_ovf_callback
-                0x008034d3        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034bb        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tcd0_ccd_callback
-                0x008034d5        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034bd        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tcd0_ccc_callback
-                0x008034d7        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034bf        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tcd0_ccb_callback
-                0x008034d9        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034c1        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tcd0_cca_callback
-                0x008034db        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034c3        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tcd0_err_callback
-                0x008034dd        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034c5        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tcd0_ovf_callback
-                0x008034df        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034c7        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tcc1_ccb_callback
-                0x008034e1        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034c9        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tcc1_cca_callback
-                0x008034e3        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034cb        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tcc1_err_callback
-                0x008034e5        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034cd        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tcc1_ovf_callback
-                0x008034e7        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034cf        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tcc0_ccd_callback
-                0x008034e9        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034d1        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tcc0_ccc_callback
-                0x008034eb        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034d3        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tcc0_ccb_callback
-                0x008034ed        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034d5        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tcc0_cca_callback
-                0x008034ef        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034d7        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tcc0_err_callback
-                0x008034f1        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034d9        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.tc_tcc0_ovf_callback
-                0x008034f3        0x2 src/ASF/xmega/drivers/tc/tc.o
+                0x008034db        0x2 src/ASF/xmega/drivers/tc/tc.o
  .bss.b_shortpacket.7376
-                0x008034f5        0x1 src/ASF/xmega/drivers/usb/usb_device.o
+                0x008034dd        0x1 src/ASF/xmega/drivers/usb/usb_device.o
  .bss.udd_ep_out_cache_buffer
-                0x008034f6       0xc0 src/ASF/xmega/drivers/usb/usb_device.o
+                0x008034de       0xc0 src/ASF/xmega/drivers/usb/usb_device.o
  .bss.udd_ep_job
-                0x008035b6       0x36 src/ASF/xmega/drivers/usb/usb_device.o
+                0x0080359e       0x36 src/ASF/xmega/drivers/usb/usb_device.o
  .bss.udd_ctrl_buffer
-                0x008035ec       0x40 src/ASF/xmega/drivers/usb/usb_device.o
+                0x008035d4       0x40 src/ASF/xmega/drivers/usb/usb_device.o
  .bss.udd_ctrl_payload_nb_trans
-                0x0080362c        0x2 src/ASF/xmega/drivers/usb/usb_device.o
+                0x00803614        0x2 src/ASF/xmega/drivers/usb/usb_device.o
  .bss.udd_ctrl_prev_payload_nb_trans
-                0x0080362e        0x2 src/ASF/xmega/drivers/usb/usb_device.o
+                0x00803616        0x2 src/ASF/xmega/drivers/usb/usb_device.o
  .bss.udd_ep_control_state
-                0x00803630        0x1 src/ASF/xmega/drivers/usb/usb_device.o
- *fill*         0x00803631        0x3 
- .bss.udd_sram  0x00803634       0x54 src/ASF/xmega/drivers/usb/usb_device.o
+                0x00803618        0x1 src/ASF/xmega/drivers/usb/usb_device.o
+ *fill*         0x00803619        0x3 
+ .bss.udd_sram  0x0080361c       0x54 src/ASF/xmega/drivers/usb/usb_device.o
  .bss.udd_b_idle
-                0x00803688        0x1 src/ASF/xmega/drivers/usb/usb_device.o
+                0x00803670        0x1 src/ASF/xmega/drivers/usb/usb_device.o
  *(COMMON)
- COMMON         0x00803689     0x16c1 src/ui.o
-                0x00803689                _ui_sw0_ptr
-                0x0080368b                _ui_sw0_lastptr
-                0x0080368d                ui_armtx
-                0x00804a8d                ui_shuff16chars
-                0x00804a9d                ui_fname
-                0x00804b01                _ui_sw1_ptr
-                0x00804b03                ui_armtx_bp
-                0x00804b19                ui_armtx_uniqueid
-                0x00804b22                ui_wallet_tmp
-                0x00804c34                _ui_qtb_ptr
-                0x00804c36                _ui_sw1_lastptr
-                0x00804c38                ui_wallet
- COMMON         0x00804d4a      0x400 src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.o
-                0x00804d4a                sector_buf_1
-                0x00804f4a                sector_buf_0
- COMMON         0x0080514a        0x1 src/ASF/common/services/usb/class/msc/device/udi_msc.o
-                0x0080514a                udi_msc_b_abort_trans
- COMMON         0x0080514b        0x2 src/ASF/common/utils/stdio/read.o
-                0x0080514b                ptr_get
- COMMON         0x0080514d        0x4 src/ASF/common/utils/stdio/write.o
-                0x0080514d                ptr_put
-                0x0080514f                stdio_base
- COMMON         0x00805151        0x8 src/ASF/xmega/drivers/rtc/rtc.o
-                0x00805151                rtc_data
- COMMON         0x00805159       0x10 src/ASF/xmega/drivers/usb/usb_device.o
-                0x00805159                udd_g_ctrlreq
- COMMON         0x00805169        0x6 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1056/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/../../../../avr/lib/avrxmega6\libc.a(iob.o)
-                0x00805169                __iob
- COMMON         0x0080516f        0x4 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1056/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/../../../../avr/lib/avrxmega6\libc.a(malloc.o)
-                0x0080516f                __brkval
-                0x00805171                __flp
-                0x00805173                PROVIDE (__bss_end, .)
+ COMMON         0x00803671     0x16c1 src/ui.o
+                0x00803671                _ui_sw0_ptr
+                0x00803673                _ui_sw0_lastptr
+                0x00803675                ui_armtx
+                0x00804a75                ui_shuff16chars
+                0x00804a85                ui_fname
+                0x00804ae9                _ui_sw1_ptr
+                0x00804aeb                ui_armtx_bp
+                0x00804b01                ui_armtx_uniqueid
+                0x00804b0a                ui_wallet_tmp
+                0x00804c1c                _ui_qtb_ptr
+                0x00804c1e                _ui_sw1_lastptr
+                0x00804c20                ui_wallet
+ COMMON         0x00804d32      0x400 src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.o
+                0x00804d32                sector_buf_1
+                0x00804f32                sector_buf_0
+ COMMON         0x00805132        0x1 src/ASF/common/services/usb/class/msc/device/udi_msc.o
+                0x00805132                udi_msc_b_abort_trans
+ COMMON         0x00805133        0x2 src/ASF/common/utils/stdio/read.o
+                0x00805133                ptr_get
+ COMMON         0x00805135        0x4 src/ASF/common/utils/stdio/write.o
+                0x00805135                ptr_put
+                0x00805137                stdio_base
+ COMMON         0x00805139        0x8 src/ASF/xmega/drivers/rtc/rtc.o
+                0x00805139                rtc_data
+ COMMON         0x00805141       0x10 src/ASF/xmega/drivers/usb/usb_device.o
+                0x00805141                udd_g_ctrlreq
+ COMMON         0x00805151        0x6 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1056/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/../../../../avr/lib/avrxmega6\libc.a(iob.o)
+                0x00805151                __iob
+ COMMON         0x00805157        0x4 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1056/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/../../../../avr/lib/avrxmega6\libc.a(malloc.o)
+                0x00805157                __brkval
+                0x00805159                __flp
+                0x0080515b                PROVIDE (__bss_end, .)
                 0x0001a932                __data_load_start = LOADADDR (.data)
-                0x0001b8b0                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x0001b89a                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00805173        0x0
-                0x00805173                PROVIDE (__noinit_start, .)
+.noinit         0x0080515b        0x0
+                0x0080515b                PROVIDE (__noinit_start, .)
  *(.noinit*)
-                0x00805173                PROVIDE (__noinit_end, .)
-                0x00805173                _end = .
-                0x00805173                PROVIDE (__heap_start, .)
+                0x0080515b                PROVIDE (__noinit_end, .)
+                0x0080515b                _end = .
+                0x0080515b                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
  *(.eeprom*)
@@ -8223,7 +8223,7 @@ END GROUP
  .debug_frame   0x000061b0       0xe4 src/hmac.o
  .debug_frame   0x00006294       0x54 src/main.o
 
-.debug_str      0x00000000    0x4172c
+.debug_str      0x00000000    0x41759
  *(.debug_str)
  .debug_str     0x00000000     0x35cf src/base58.o
                                0x368c (size before relaxing)
@@ -8235,92 +8235,92 @@ END GROUP
                                0x4019 (size before relaxing)
  .debug_str     0x0002e966      0xaa0 src/transaction.o
                               0x2e294 (size before relaxing)
- .debug_str     0x0002f406      0xd27 src/ui.o
-                              0x2f045 (size before relaxing)
- .debug_str     0x0003012d      0x11f src/utils.o
+ .debug_str     0x0002f406      0xd54 src/ui.o
+                              0x2f03c (size before relaxing)
+ .debug_str     0x0003015a      0x11f src/utils.o
                               0x2dad2 (size before relaxing)
- .debug_str     0x0003024c      0x1e5 src/wallet.o
-                              0x2e4be (size before relaxing)
- .debug_str     0x00030431      0x50d src/app_touch.o
+ .debug_str     0x00030279      0x1e5 src/wallet.o
+                              0x2e4b5 (size before relaxing)
+ .debug_str     0x0003045e      0x50d src/app_touch.o
                               0x2e12d (size before relaxing)
- .debug_str     0x0003093e      0x4b7 src/ASF/common/components/display/ssd1306/font.o
+ .debug_str     0x0003096b      0x4b7 src/ASF/common/components/display/ssd1306/font.o
                               0x2252d (size before relaxing)
- .debug_str     0x00030df5      0x2ee src/ASF/common/components/display/ssd1306/ssd1306.o
+ .debug_str     0x00030e22      0x2ee src/ASF/common/components/display/ssd1306/ssd1306.o
                               0x257ba (size before relaxing)
- .debug_str     0x000310e3     0x53cb src/ASF/common/components/memory/sd_mmc/sd_mmc.o
+ .debug_str     0x00031110     0x53cb src/ASF/common/components/memory/sd_mmc/sd_mmc.o
                               0x2a316 (size before relaxing)
- .debug_str     0x000364ae      0x27f src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.o
+ .debug_str     0x000364db      0x27f src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.o
                               0x2db61 (size before relaxing)
- .debug_str     0x0003672d      0x4e4 src/ASF/common/components/memory/sd_mmc/sd_mmc_spi.o
+ .debug_str     0x0003675a      0x4e4 src/ASF/common/components/memory/sd_mmc/sd_mmc_spi.o
                               0x2904f (size before relaxing)
- .debug_str     0x00036c11      0x27e src/ASF/common/services/calendar/calendar.o
+ .debug_str     0x00036c3e      0x27e src/ASF/common/services/calendar/calendar.o
                               0x2279c (size before relaxing)
- .debug_str     0x00036e8f      0x7c0 src/ASF/common/services/clock/xmega/sysclk.o
+ .debug_str     0x00036ebc      0x7c0 src/ASF/common/services/clock/xmega/sysclk.o
                               0x249f3 (size before relaxing)
- .debug_str     0x0003764f      0x1ae src/ASF/common/services/gfx_mono/gfx_mono_framebuffer.o
+ .debug_str     0x0003767c      0x1ae src/ASF/common/services/gfx_mono/gfx_mono_framebuffer.o
                               0x25c38 (size before relaxing)
- .debug_str     0x000377fd      0x228 src/ASF/common/services/gfx_mono/gfx_mono_generic.o
+ .debug_str     0x0003782a      0x228 src/ASF/common/services/gfx_mono/gfx_mono_generic.o
                               0x25d7b (size before relaxing)
- .debug_str     0x00037a25      0x1bc src/ASF/common/services/gfx_mono/gfx_mono_text.o
+ .debug_str     0x00037a52      0x1bc src/ASF/common/services/gfx_mono/gfx_mono_text.o
                               0x25d20 (size before relaxing)
- .debug_str     0x00037be1      0x111 src/ASF/common/services/gfx_mono/gfx_mono_ug_2832hsweg04.o
+ .debug_str     0x00037c0e      0x111 src/ASF/common/services/gfx_mono/gfx_mono_ug_2832hsweg04.o
                               0x26000 (size before relaxing)
- .debug_str     0x00037cf2       0x3d src/ASF/common/services/gfx_mono/sysfont.o
+ .debug_str     0x00037d1f       0x3d src/ASF/common/services/gfx_mono/sysfont.o
                               0x26b6c (size before relaxing)
- .debug_str     0x00037d2f       0xab src/ASF/common/services/ioport/xmega/ioport_compat.o
+ .debug_str     0x00037d5c       0xab src/ASF/common/services/ioport/xmega/ioport_compat.o
                               0x2268b (size before relaxing)
- .debug_str     0x00037dda       0x35 src/ASF/common/services/sleepmgr/xmega/sleepmgr.o
+ .debug_str     0x00037e07       0x35 src/ASF/common/services/sleepmgr/xmega/sleepmgr.o
                               0x22387 (size before relaxing)
- .debug_str     0x00037e0f       0xbb src/ASF/common/services/spi/xmega_usart_spi/usart_spi.o
+ .debug_str     0x00037e3c       0xbb src/ASF/common/services/spi/xmega_usart_spi/usart_spi.o
                               0x24c93 (size before relaxing)
- .debug_str     0x00037eca      0x2bb src/ASF/common/services/storage/ctrl_access/ctrl_access.o
+ .debug_str     0x00037ef7      0x2bb src/ASF/common/services/storage/ctrl_access/ctrl_access.o
                               0x24d6d (size before relaxing)
- .debug_str     0x00038185      0xd6e src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
+ .debug_str     0x000381b2      0xd6e src/ASF/common/services/usb/class/cdc/device/udi_cdc.o
                               0x2e5aa (size before relaxing)
- .debug_str     0x00038ef3      0x5ec src/ASF/common/services/usb/class/composite/device/udi_composite_desc.o
+ .debug_str     0x00038f20      0x5ec src/ASF/common/services/usb/class/composite/device/udi_composite_desc.o
                               0x2dd86 (size before relaxing)
- .debug_str     0x000394df     0x16bd src/ASF/common/services/usb/class/msc/device/udi_msc.o
+ .debug_str     0x0003950c     0x16bd src/ASF/common/services/usb/class/msc/device/udi_msc.o
                               0x2f058 (size before relaxing)
- .debug_str     0x0003ab9c      0x7c6 src/ASF/common/services/usb/udc/udc.o
+ .debug_str     0x0003abc9      0x7c6 src/ASF/common/services/usb/udc/udc.o
                               0x2e33d (size before relaxing)
- .debug_str     0x0003b362       0x38 src/ASF/common/utils/stdio/read.o
+ .debug_str     0x0003b38f       0x38 src/ASF/common/utils/stdio/read.o
                               0x2202f (size before relaxing)
- .debug_str     0x0003b39a       0xa6 src/ASF/common/utils/stdio/stdio_usb/stdio_usb.o
+ .debug_str     0x0003b3c7       0xa6 src/ASF/common/utils/stdio/stdio_usb/stdio_usb.o
                               0x2d828 (size before relaxing)
- .debug_str     0x0003b440       0x26 src/ASF/common/utils/stdio/write.o
+ .debug_str     0x0003b46d       0x26 src/ASF/common/utils/stdio/write.o
                               0x22031 (size before relaxing)
- .debug_str     0x0003b466      0x143 src/ASF/thirdparty/fatfs/fatfs-port-r0.09/diskio.o
+ .debug_str     0x0003b493      0x143 src/ASF/thirdparty/fatfs/fatfs-port-r0.09/diskio.o
                               0x25183 (size before relaxing)
- .debug_str     0x0003b5a9       0x56 src/ASF/thirdparty/fatfs/fatfs-port-r0.09/xmega/fattime.o
+ .debug_str     0x0003b5d6       0x56 src/ASF/thirdparty/fatfs/fatfs-port-r0.09/xmega/fattime.o
                               0x22127 (size before relaxing)
- .debug_str     0x0003b5ff      0xaf0 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ff.o
+ .debug_str     0x0003b62c      0xaf0 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ff.o
                                0x4274 (size before relaxing)
- .debug_str     0x0003c0ef       0x5a src/ASF/thirdparty/fatfs/fatfs-r0.09/src/option/ccsbcs.o
+ .debug_str     0x0003c11c       0x5a src/ASF/thirdparty/fatfs/fatfs-r0.09/src/option/ccsbcs.o
                                0x31d6 (size before relaxing)
- .debug_str     0x0003c149       0x51 src/ASF/xmega/boards/xmega_c3_xplained/init.o
+ .debug_str     0x0003c176       0x51 src/ASF/xmega/boards/xmega_c3_xplained/init.o
                               0x23d75 (size before relaxing)
- .debug_str     0x0003c19a      0x542 src/ASF/xmega/drivers/nvm/nvm.o
+ .debug_str     0x0003c1c7      0x542 src/ASF/xmega/drivers/nvm/nvm.o
                               0x22bed (size before relaxing)
- .debug_str     0x0003c6dc      0x2fb src/ASF/xmega/drivers/rtc/rtc.o
+ .debug_str     0x0003c709      0x2fb src/ASF/xmega/drivers/rtc/rtc.o
                               0x2486d (size before relaxing)
- .debug_str     0x0003c9d7      0x6ef src/ASF/xmega/drivers/tc/tc.o
+ .debug_str     0x0003ca04      0x6ef src/ASF/xmega/drivers/tc/tc.o
                               0x2500c (size before relaxing)
- .debug_str     0x0003d0c6      0x629 src/ASF/xmega/drivers/usart/usart.o
+ .debug_str     0x0003d0f3      0x629 src/ASF/xmega/drivers/usart/usart.o
                               0x256f4 (size before relaxing)
- .debug_str     0x0003d6ef     0x34e8 src/ASF/xmega/drivers/usb/usb_device.o
+ .debug_str     0x0003d71c     0x34e8 src/ASF/xmega/drivers/usb/usb_device.o
                               0x31648 (size before relaxing)
- .debug_str     0x00040bd7       0x53 src/base64.o
+ .debug_str     0x00040c04       0x53 src/base64.o
                               0x1735b (size before relaxing)
- .debug_str     0x00040c2a       0xac src/bitcoin.o
+ .debug_str     0x00040c57       0xac src/bitcoin.o
                                0x3b6e (size before relaxing)
- .debug_str     0x00040cd6       0x50 src/bytestream.o
+ .debug_str     0x00040d03       0x50 src/bytestream.o
                               0x2d7a1 (size before relaxing)
- .debug_str     0x00040d26      0x99c src/ecc.o
+ .debug_str     0x00040d53      0x99c src/ecc.o
                                0x4515 (size before relaxing)
- .debug_str     0x000416c2       0x35 src/hmac.o
+ .debug_str     0x000416ef       0x35 src/hmac.o
                                0x39ab (size before relaxing)
- .debug_str     0x000416f7       0x35 src/main.o
-                              0x2e31d (size before relaxing)
+ .debug_str     0x00041724       0x35 src/main.o
+                              0x2e314 (size before relaxing)
 
 .debug_loc      0x00000000    0x2a8fd
  *(.debug_loc)

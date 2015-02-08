@@ -241,7 +241,7 @@ void ui_screen_menu_shuffcode_list(uint8_t i)
 {
 	char q[21];
 
-	sprintf(q, "%c=%x  %c=%x  %c=%x  %c=%x", ui_shuff16chars[i*4], i*4, ui_shuff16chars[1+i*4], 1+i*4, ui_shuff16chars[2+i*4], 2+i*4, ui_shuff16chars[3+i*4], 3+i*4);
+	sprintf(q, "%c=%X  %c=%X  %c=%X  %c=%X", ui_shuff16chars[i*4], i*4, ui_shuff16chars[1+i*4], 1+i*4, ui_shuff16chars[2+i*4], 2+i*4, ui_shuff16chars[3+i*4], 3+i*4);
 
 	gfx_mono_draw_string(q, 0, 11, &sysfont);
 }
@@ -408,7 +408,7 @@ void ui_screen_menu_setupwlt_shuffrootkeyfile(void)
 	gfx_mono_draw_string("SHUFF RK FILE IMPORT:", 0, 0, &sysfont);
 
 	if(!scan_for_file("rootkey", "", ui_fname) || !armwlt_read_shuffrootkey_file(ui_fname, ui_shuff16chars, ui_wallet_tmp.rootkey)) {
-		gfx_mono_draw_string("No shuff. file found.", 0, 11, &sysfont);
+		gfx_mono_draw_string("No valid data found.", 0, 11, &sysfont);
 		udc_start();
 		_ui_set_sw0(&ui_screen_menu_setupwlt,'B');
 		return;
